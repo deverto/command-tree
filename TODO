@@ -1,0 +1,17 @@
+
+- API for get command tree (or print)
+
+- add types, eg: file exists, dir exists, etc...
+
+- "global" argument
+
+- global in mutex groups!!
+
+- reusable arg "group" ?????
+
+- exceptions!
+
+- to generic doc
+    - why is better than the alternatives
+
+- docstring abs method ref
