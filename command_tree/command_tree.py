@@ -123,7 +123,7 @@ class CommandTree(object):
         if hasattr(cls.__init__, '__code__'):  # maybe this is a mystic object ctor
             args = len(inspect.getargspec(cls.__init__).args) - 1
             if args != len(cls._item_arguments):
-                raise Exception("Call {} times the argument decorator on class '{}' before the node decor".format(args, func.func_name))
+                raise Exception("Call {} times the argument decorator on class '{}' before the node decor".format(args, func.__name__))
 
         return item
 
@@ -147,7 +147,7 @@ class CommandTree(object):
         func_desc = inspect.getargspec(func)
         args = len(func_desc.args) - 1
         if args != len(func._item_arguments):
-            raise Exception("Call {} times the argument decorator on function '{}' before the leaf decor".format(args, func.func_name))
+            raise Exception("Call {} times the argument decorator on function '{}' before the leaf decor".format(args, func.__name__))
 
         return item
 
@@ -166,7 +166,7 @@ class CommandTree(object):
 
         func = None
 
-        if hasattr(obj, 'func_name'):  # use inspect
+        if inspect.isfunction(obj):
             func = obj
         else:
             func = obj.__init__  # TODO use node_handler if has ?????

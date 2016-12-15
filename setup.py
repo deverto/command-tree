@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "command-tree",
-    version = "0.1.0",
+    version = "0.1.1",
     description = "Builds command tree on argparse.ArgumentParser bases for create command line interface",
     author = "Deverto Systems LTD",
     author_email = "admin@deverto.com",

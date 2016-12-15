@@ -38,7 +38,7 @@ class NodeItem(Item):
         return self.obj.__name__
 
     def handle(self, kwargs):
-        func = getattr(self._instance, self._handler_func.func_name)
+        func = getattr(self._instance, self._handler_func.__name__)
         return func(**kwargs)
 
     def fetch(self):

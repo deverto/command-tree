@@ -10,7 +10,7 @@ class LeafItem(Item):
 
     @property
     def obj_name(self):
-        return self.obj.func_name
+        return self.obj.__name__
 
     def build(self, parser):
         self.add_arguments(parser)
