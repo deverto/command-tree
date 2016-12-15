@@ -77,6 +77,7 @@ class NodeItem(Item):
             return
         dest = self.name + "_command"
         subparsers = parser.add_subparsers(dest = dest)
+        subparsers.required = True
 
         for item in sorted(self._sub_items, key = lambda item: item.id):
             sub_parser = subparsers.add_parser(item.name, **item.parser_args)

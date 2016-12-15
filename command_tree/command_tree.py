@@ -180,8 +180,9 @@ class CommandTree(object):
         if 'default' not in kwargs and func_desc.defaults is not None and self._config.get_default_from_function_param:
             arg_idx = func_desc.args.index(name)
             default_idx = arg_idx - (len(func_desc.args) - len(func_desc.defaults))
-            default = func_desc.defaults[default_idx]
-            kwargs['default'] = default
+            if default_idx >= 0:
+                default = func_desc.defaults[default_idx]
+                kwargs['default'] = default
 
         # get_argument_type_from_function_default_value_type
         if 'type' not in kwargs and 'default' in kwargs and 'action' not in kwargs \
