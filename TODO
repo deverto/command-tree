@@ -1,17 +1,33 @@
 
-- API for get command tree (or print)
+TODO before release v1.0.0
+==========================
+
+- enh:
+
+    - "global" argument (in mutex groups too)
+
+- cleanup:
+
+    - refactor exceptions to sg tree like stuff
+
+    - remove all TODO from source
+
+    - logging!!
+
+- doc
+
+    - add docstring to all public class and function
+
+    - generic doc:
+        - why is better than the alternatives
+
+    - docstring abs method ref
+
+other issues, ideas
+===================
+
+- API for get command tree  (or print)
 
 - add types, eg: file exists, dir exists, etc...
 
-- "global" argument
-
-- global in mutex groups!!
-
-- reusable arg "group" ?????
-
-- exceptions!
-
-- to generic doc
-    - why is better than the alternatives
-
-- docstring abs method ref
+- reusable arg "group" ??
