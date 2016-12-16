@@ -28,6 +28,30 @@ other issues, ideas
 
 - API for get command tree  (or print)
 
-- add types, eg: file exists, dir exists, etc...
-
 - reusable arg "group" ??
+
+- get arg type from docstring
+
+    >>> from command_tree.types import valid_file
+    >>>
+    >>> def get_global_attr(attr_name):
+    ...
+    ...     data = globals()
+    ...
+    ...     if attr_name in data:
+    ...         return data[attr_name]
+    ...
+    ...     builtin_attrs = data['__builtins__']
+    ...
+    ...     if hasattr(builtin_attrs, attr_name):
+    ...         return getattr(builtin_attrs, attr_name)
+    ...
+    ...     return None
+    ...
+    >>> print(get_global_attr('valid_file'))
+    <function valid_file at 0x7fbead13ab18>
+    >>> print(get_global_attr('str'))
+    <type 'str'>
+
+    - python2-3 compat!
+    - what about submodules? os.path.isfile, etc
