@@ -63,7 +63,7 @@ class Item(object):
 
         info = self._docstring_parser.parse(self.obj.__doc__)
 
-        if len(info.description) and 'help' not in self._parser_args:
+        if info.description and 'help' not in self._parser_args:
             self._parser_args['help'] = info.description
 
         for arg_name, arg_info in info.argument_infos.items():

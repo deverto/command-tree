@@ -169,3 +169,30 @@ class TestDocStringParse(TestCase):
 
         self.assertEqual(item.arguments[2].name, "arg3")
         self.assertEqual(item.arguments[2].kwargs['help'], "help for arg3")
+
+    def test_args_without_desc(self):
+        # Arrange
+        class DummyNode(object):
+            """
+            Args:
+                arg1: help for arg1
+                arg2 (str): help for arg2
+
+            """
+            _item_arguments = [
+                Argument("arg1"),
+                Argument("arg2"),
+            ]
+
+        item = NodeItem("test", DummyNode, 42, docstring_parser = parser)
+
+        # Act
+        item.parse_doc_string()
+
+        # Assert
+        self.assertEqual(len(item.arguments), 2)
+        self.assertEqual(item.arguments[0].name, "arg1")
+        self.assertEqual(item.arguments[0].kwargs['help'], "help for arg1")
+
+        self.assertEqual(item.arguments[1].name, "arg2")
+        self.assertEqual(item.arguments[1].kwargs['help'], "help for arg2")
