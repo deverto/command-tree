@@ -8,9 +8,9 @@ class Item(object):
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, name, obj, id, parser_args = None, docstring_parser = None):
+    def __init__(self, name, obj, id, parser_args = None, docstring_parser = None, name_generator = None):
         self._obj = obj
-        self._name = name or self.obj_name.lower()
+        self._name = name
         self._top_item = True
         self._instance = None
         self._id = id
@@ -18,6 +18,9 @@ class Item(object):
         self._docstring_parser = docstring_parser
         if not hasattr(obj, "_item_arguments"):
             obj._item_arguments = []
+
+        if self._name is None and name_generator:
+            self._name = name_generator(self.obj_name)
 
     @abstractmethod
     def build(self, parser):

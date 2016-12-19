@@ -7,8 +7,8 @@ class NodeItem(Item):
     TODO
     """
 
-    def __init__(self, name, cls, id, items = None, parser_args = None, docstring_parser = None):
-        super(NodeItem, self).__init__(name, cls, id, parser_args, docstring_parser)
+    def __init__(self, name, cls, id, items = None, parser_args = None, docstring_parser = None, name_generator = None):
+        super(NodeItem, self).__init__(name, cls, id, parser_args, docstring_parser, name_generator)
         self._sub_items = []
         self._instance = None
         self._handler_func = None
@@ -36,6 +36,10 @@ class NodeItem(Item):
     @property
     def obj_name(self):
         return self.obj.__name__
+
+    @property
+    def items(self):
+        return self._sub_items
 
     def handle(self, kwargs):
         func = getattr(self._instance, self._handler_func.__name__)

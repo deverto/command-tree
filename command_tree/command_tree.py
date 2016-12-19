@@ -19,6 +19,10 @@ class CommandTree(object):
         self._item_counter = 0
         self._config = config or Config()
 
+    @property
+    def items(self):
+        return self._root.items
+
     def root(self, items = None, **kwargs):
         """Special node decorator; it can used only once
 
@@ -115,7 +119,7 @@ class CommandTree(object):
         Returns:
             NodeItem: the item descriptor instance
         """
-        item = NodeItem(name, cls, self._next_item_id, items, kwargs, self._config.docstring_parser)
+        item = NodeItem(name, cls, self._next_item_id, items, kwargs, self._config.docstring_parser, self.generate_name_for_item)
         cls._item = item
         item.fetch()
         item.parse_doc_string()
@@ -126,6 +130,12 @@ class CommandTree(object):
                 raise Exception("Call {} times the argument decorator on class '{}' before the node decor".format(args, func.__name__))
 
         return item
+
+    def generate_name_for_item(self, source):
+        if self._config.change_underscores_to_hyphens_in_names:
+            return source.replace('_', '-')
+        else:
+            return source.lower()
 
     def add_leaf(self, func, name = None, **kwargs):
         """Add leaf to the tree
@@ -139,7 +149,7 @@ class CommandTree(object):
         Returns:
             LeafItem: the item descriptor instance
         """
-        item = LeafItem(name, func, self._next_item_id, kwargs, self._config.docstring_parser)
+        item = LeafItem(name, func, self._next_item_id, kwargs, self._config.docstring_parser, self.generate_name_for_item)
         func._item = item
         item.parse_doc_string()
 
@@ -188,7 +198,7 @@ class CommandTree(object):
            and self._config.get_argument_type_from_function_default_value_type:
             kwargs['type'] = type(kwargs['default'])
 
-        arg = Argument(identifier, args, kwargs)
+        arg = Argument(identifier, args, kwargs, self.generate_name_for_item)
         obj._item_arguments.insert(0, arg)
         return arg
 
