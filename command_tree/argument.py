@@ -34,8 +34,8 @@ class Argument(object):
     TODO
     """
 
-    def __init__(self, name, args = None, kwargs = None):
-        self.name = name
+    def __init__(self, identifier, args = None, kwargs = None):
+        self.identifier = identifier
         self.args = args or []
         self.kwargs = kwargs or {}
         self.action = None
@@ -45,6 +45,6 @@ class Argument(object):
         if self.action is not None:
             raise Exception("what?")
 
-        args = self.args or [self.name]
+        args = self.args or [self.identifier]
 
         self.action = self.add_argument_handler.add(parser, *args, **self.kwargs)

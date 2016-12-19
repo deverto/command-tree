@@ -68,6 +68,6 @@ class Item(object):
 
         for arg_name, arg_info in info.argument_infos.items():
             for arg in self._obj._item_arguments:  # TODO: self._obj._item_arguments ordereddict
-                if arg.name == arg_name and 'help' not in arg.kwargs:
+                if arg.identifier == arg_name and 'help' not in arg.kwargs:
                     arg.kwargs['help'] = arg_info.help
                     break

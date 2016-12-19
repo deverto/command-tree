@@ -173,12 +173,11 @@ class CommandTree(object):
 
         func_desc = inspect.getargspec(func)
 
-        # TODO rename to sg id like
-        name = func_desc.args[- len(obj._item_arguments) - 1]
+        identifier = func_desc.args[- len(obj._item_arguments) - 1]
 
         # get_default_from_function_param
         if 'default' not in kwargs and func_desc.defaults is not None and self._config.get_default_from_function_param:
-            arg_idx = func_desc.args.index(name)
+            arg_idx = func_desc.args.index(identifier)
             default_idx = arg_idx - (len(func_desc.args) - len(func_desc.defaults))
             if default_idx >= 0:
                 default = func_desc.defaults[default_idx]
@@ -189,7 +188,7 @@ class CommandTree(object):
            and self._config.get_argument_type_from_function_default_value_type:
             kwargs['type'] = type(kwargs['default'])
 
-        arg = Argument(name, args, kwargs)
+        arg = Argument(identifier, args, kwargs)
         obj._item_arguments.insert(0, arg)
         return arg
 
@@ -238,7 +237,7 @@ class CommandTree(object):
                 # it's a node, and it has items in it
                 inst_args = {}  # TODO dict compr
                 for arg in item.arguments:
-                    inst_args[arg.name] = parsed_args[arg.name]
+                    inst_args[arg.identifier] = parsed_args[arg.identifier]
 
                 item.instance = item.obj(**inst_args)
 
@@ -251,7 +250,7 @@ class CommandTree(object):
                 func = getattr(parent, item.obj_name)
                 func_args = {}
                 for arg in item.arguments:
-                    func_args[arg.name] = parsed_args[arg.action.dest]
+                    func_args[arg.identifier] = parsed_args[arg.action.dest]
                 return func(**func_args)
             else:
                 # node without sub nodes or leafs
@@ -260,7 +259,7 @@ class CommandTree(object):
 
                 inst_args = {}
                 for arg in item.arguments:
-                    inst_args[arg.name] = parsed_args[arg.name]
+                    inst_args[arg.identifier] = parsed_args[arg.identifier]
 
                 item.instance = item.obj(**inst_args)
 

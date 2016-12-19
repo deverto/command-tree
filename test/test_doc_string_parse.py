@@ -112,7 +112,7 @@ class TestDocStringParse(TestCase):
 
         # Assert
         self.assertEqual(len(item.arguments), 1)
-        self.assertEqual(item.arguments[0].name, "arg1")
+        self.assertEqual(item.arguments[0].identifier, "arg1")
         self.assertEqual(item.arguments[0].kwargs['help'], "help for arg1")
 
     def test_get_arg_help_form_class_but_decorator_params_are_stronger(self):
@@ -134,7 +134,7 @@ class TestDocStringParse(TestCase):
 
         # Assert
         self.assertEqual(len(item.arguments), 1)
-        self.assertEqual(item.arguments[0].name, "arg1")
+        self.assertEqual(item.arguments[0].identifier, "arg1")
         self.assertEqual(item.arguments[0].kwargs['help'], "heeelp")
 
     def test_get_lot_of_arg_help_form_class(self):
@@ -161,13 +161,13 @@ class TestDocStringParse(TestCase):
 
         # Assert
         self.assertEqual(len(item.arguments), 3)
-        self.assertEqual(item.arguments[0].name, "arg1")
+        self.assertEqual(item.arguments[0].identifier, "arg1")
         self.assertEqual(item.arguments[0].kwargs['help'], "help for arg1")
 
-        self.assertEqual(item.arguments[1].name, "arg2")
+        self.assertEqual(item.arguments[1].identifier, "arg2")
         self.assertEqual(item.arguments[1].kwargs['help'], "help for arg2")
 
-        self.assertEqual(item.arguments[2].name, "arg3")
+        self.assertEqual(item.arguments[2].identifier, "arg3")
         self.assertEqual(item.arguments[2].kwargs['help'], "help for arg3")
 
     def test_args_without_desc(self):
@@ -191,8 +191,8 @@ class TestDocStringParse(TestCase):
 
         # Assert
         self.assertEqual(len(item.arguments), 2)
-        self.assertEqual(item.arguments[0].name, "arg1")
+        self.assertEqual(item.arguments[0].identifier, "arg1")
         self.assertEqual(item.arguments[0].kwargs['help'], "help for arg1")
 
-        self.assertEqual(item.arguments[1].name, "arg2")
+        self.assertEqual(item.arguments[1].identifier, "arg2")
         self.assertEqual(item.arguments[1].kwargs['help'], "help for arg2")
