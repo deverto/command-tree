@@ -1,0 +1,27 @@
+parent: null
+extend:
+  reference_filter: .*
+  message:
+    default:
+      module: dvrt_git_hooks
+      class: DefaultMessageChecker
+      arguments:
+        summary_length: 70
+        description_line_length: 80
+  patch:
+    files:
+    - linters: [python, badwords]
+      regexp: .+\.py$
+    linters:
+      badwords:
+        arguments:
+          words: [XXX, FIXME]
+        class: BadWordLinter
+        module: dvrt_git_hooks.bad_word_linter
+      python:
+        arguments:
+          checker_config:
+            ignore: [E251, E302, E305, E401]
+            max_line_length: 142
+        class: PythonLinter
+        module: dvrt_git_hooks.python_linter

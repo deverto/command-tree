@@ -22,8 +22,8 @@ class Config(object):
                                                        So if the function or argument name is 'command_name' the generate name will be
                                                        'command-name' if this setting is enabled.
 
-        prepend_double_hyphen_prefix_if_arg_has_default (bool): If the name not defined explicit, and there is a default value for the argument
-                                                                add hyphen prefix to the generated argument name.
+        prepend_double_hyphen_prefix_if_arg_has_default (bool): If the name not defined explicit, and there is a default value for the
+                                                                argument add hyphen prefix to the generated argument name.
 
         generate_simple_hyphen_name (dict or bool): If there is no explicit name set and this value is not None, the CommandTree try to
                                                     generate a name whith a simple hyphen prefix. So if the argument name is 'arg1', the
