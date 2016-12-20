@@ -26,6 +26,9 @@ TODO before release v1.0.0
 other issues, ideas
 ===================
 
+- default value is list, but nargs is present, the type is not guessable
+    @tree.argument(help = 'the hook args', nargs = '*', type = str) # TODO: the type is not that type
+
 - API for get command tree  (or print)
 
 - reusable arg "group" ??

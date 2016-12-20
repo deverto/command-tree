@@ -2,17 +2,22 @@
 argparse libs:
 
     - builtin argparse
+        + builtin
         - very lowlevel
-        - needs lots of code
+        - needs lots of code to build a tree
 
-    - click
+    - click (https://github.com/pallets/click)
         + ~3800 star on github!
         + nested arguments (like argparser's subparsers)
         + very richfull
         - build a nested struct with flat struct
         - positional arguments cannot have help (Arguments cannot be documented this way. This is to follow the general convention of Unix tools of using arguments for only the most necessary things and to document them in the introduction text by referring to them by name.)
         - not arparse compatible
-    - docopt
+
+    - docopt (https://github.com/docopt/docopt)
         + ~4800 star
         + multilang
-        - no support for multi level commands
+        - no support for multi level commands ()
+
+    - arghandler (https://github.com/druths/arghandler)
+        -
