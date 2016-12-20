@@ -80,7 +80,7 @@ class NodeItem(Item):
         if not len(self._sub_items):
             return
         dest = self.name + "_command"
-        subparsers = parser.add_subparsers(dest = dest)
+        subparsers = parser.add_subparsers(dest = dest, metavar = "subcommand")
         subparsers.required = True
 
         for item in sorted(self._sub_items, key = lambda item: item.id):
