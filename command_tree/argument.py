@@ -46,6 +46,6 @@ class Argument(object):
         if self.action is not None:
             raise Exception("what?")
 
-        args = self.args or [self._name_generator(self.identifier) if self._name_generator else self.identifier]
+        args = self.args or self._name_generator(self.identifier) if self._name_generator else [self.identifier]
 
         self.action = self.add_argument_handler.add(parser, *args, **self.kwargs)

@@ -1,6 +1,7 @@
 
 from argparse import ArgumentParser
 import inspect
+from functools import partial
 
 from .node_item import NodeItem
 from .leaf_item import LeafItem
@@ -137,6 +138,30 @@ class CommandTree(object):
         else:
             return source.lower()
 
+    def generate_name_for_argument(self, args, kwargs, identifier):
+        long_name = self.generate_name_for_item(identifier)
+
+        if self._config.prepend_double_hyphen_prefix_if_arg_has_default and 'default' in kwargs:
+            long_name = '--' + long_name
+
+        res = [long_name]
+
+        if self._config.generate_simple_hyphen_name is not False and 'default' in kwargs:
+            short_name = identifier[0]
+            hyphen_map = self._config.generate_simple_hyphen_name
+            if isinstance(hyphen_map, dict) and identifier in hyphen_map:
+                short_name = hyphen_map[identifier]
+
+            short_name = '-' + short_name
+
+            if long_name.startswith('--'):
+                res.insert(0, short_name)
+            else:
+                res = [short_name]
+                kwargs['dest'] = identifier
+
+        return res
+
     def add_leaf(self, func, name = None, **kwargs):
         """Add leaf to the tree
 
@@ -198,7 +223,7 @@ class CommandTree(object):
            and self._config.get_argument_type_from_function_default_value_type:
             kwargs['type'] = type(kwargs['default'])
 
-        arg = Argument(identifier, args, kwargs, self.generate_name_for_item)
+        arg = Argument(identifier, args, kwargs, partial(self.generate_name_for_argument, args, kwargs))
         obj._item_arguments.insert(0, arg)
         return arg
 
