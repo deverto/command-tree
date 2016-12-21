@@ -19,7 +19,6 @@ class Item(object):
     def __init__(self, name, obj, id, parser_args = None, docstring_parser = None, name_generator = None):
         self._obj = obj
         self._name = name
-        self._top_item = True
         self._instance = None
         self._id = id
         self._parser_args = parser_args or {}
@@ -110,3 +109,6 @@ class Item(object):
                 if arg.identifier == arg_name and 'help' not in arg.kwargs:
                     arg.kwargs['help'] = arg_info.help
                     break
+
+    def __repr__(self):
+        return "<{}: name={}, id={}, object={}>".format(self.__class__.__name__, self.name, self.id, self.obj)

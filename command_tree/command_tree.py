@@ -7,6 +7,7 @@ from .node_item import NodeItem
 from .leaf_item import LeafItem
 from .config import Config
 from .argument import Argument
+from .exceptions import RootNodeException, NodeException, LeafException
 
 class CommandTree(object):
     """Define the main API for build a tree with :py:mod:`argparse`. It defines decorators and other functions to it.
@@ -102,7 +103,7 @@ class CommandTree(object):
             NodeItem: the item descriptor instance
         """
         if self._root is not None:
-            raise Exception("TODO")
+            raise RootNodeException("The root node was already set", self._root)
         item = self.add_node(cls, "root", items, **kwargs)
         self._root = item
         return item
@@ -127,7 +128,8 @@ class CommandTree(object):
         if hasattr(cls.__init__, '__code__'):  # maybe this is a mystic object ctor
             args = len(inspect.getargspec(cls.__init__).args) - 1
             if args != len(cls._item_arguments):
-                raise Exception("Call {} times the argument decorator on class '{}' before the node decor".format(args, func.__name__))
+                raise NodeException("Call {} times the argument decorator on class '{}' before the node decor".format(args, cls.__name__),
+                                    item)
 
         return item
 
@@ -175,7 +177,8 @@ class CommandTree(object):
         func_desc = inspect.getargspec(func)
         args = len(func_desc.args) - 1
         if args != len(func._item_arguments):
-            raise Exception("Call {} times the argument decorator on function '{}' before the leaf decor".format(args, func.__name__))
+            raise LeafException("Call {} times the argument decorator on function '{}' before the leaf decor".format(args, func.__name__),
+                                item)
 
         return item
 
@@ -232,7 +235,7 @@ class CommandTree(object):
         parser = parser or ArgumentParser()
 
         if not self._root:
-            raise Exception("what")
+            raise RootNodeException("Root node is not defined!")
 
         self._root.build(parser)
 
@@ -249,7 +252,7 @@ class CommandTree(object):
             The return value of the leaf handler function
         """
         if not self._root:
-            raise Exception("what")
+            raise RootNodeException("Root node is not defined!")
 
         parser = parser or self.build()
 
@@ -283,7 +286,7 @@ class CommandTree(object):
             else:
                 # node without sub nodes or leafs
                 if not item.has_handler:
-                    raise Exception("what?")
+                    raise NodeException("Initialiser not found!", item)
 
                 inst_args = {}
                 for arg in item.arguments:

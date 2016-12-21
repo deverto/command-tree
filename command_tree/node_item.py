@@ -1,6 +1,8 @@
 
 from .item import Item
 
+from .exceptions import NodeException
+
 class NodeItem(Item):
     """An item what may have sub nodes or leafs. Holding a class type and instance.
 
@@ -64,8 +66,9 @@ class NodeItem(Item):
                 self._sub_items.append(getattr(attr, "_item"))
 
             if hasattr(attr, '_node_handler'):
+                if self._handler_func:
+                    raise NodeException("Initialzer was set already to {}".format(self._handler_func), self)
                 self._handler_func = attr
-                # TODO raise if exists already
 
     def get_item(self, name):
         """Get the specfified sub item by name
@@ -94,7 +97,7 @@ class NodeItem(Item):
         """See :py:func:`command_tree.item.Item.build`"""
 
         if not len(self._sub_items) and not len(self.arguments):
-            raise Exception("what?")
+            raise NodeException("There is no sub nodes or leafs and not even an argument defined!", self)
 
         self.add_arguments(parser)
 

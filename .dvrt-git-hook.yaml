@@ -25,3 +25,4 @@ extend:
             max_line_length: 142
         class: PythonLinter
         module: dvrt_git_hooks.python_linter
+

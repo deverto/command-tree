@@ -1,6 +1,8 @@
 
 from abc import ABCMeta, abstractmethod
 
+from .exceptions import ArgumentException
+
 class AddArgumentHandlerBase(object):
     """
     Interface for override the default way to use :py:func:`argparser.ArgumenParser.add_argument` function. (Typical usage of this is
@@ -54,8 +56,11 @@ class Argument(object):
             parser (argparse.ArgumentParser) the parent parser
         """
         if self.action is not None:
-            raise Exception("what?")
+            raise ArgumentException("Do not call add_to_parser more than once!", self)
 
         args = self.args or self._name_generator(self.identifier) if self._name_generator else [self.identifier]
 
         self.action = self.add_argument_handler.add(parser, *args, **self.kwargs)
+
+    def __repr__(self):
+        return "<Argument: identifier={}>".format(self.identifier)

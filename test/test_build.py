@@ -1,4 +1,5 @@
 
+
 from unittest import TestCase
 from command_tree import CommandTree
 
@@ -22,7 +23,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['-v'])
 
         # Assert
-        self.assertEqual(res, "42.0")
+        assert res == "42.0"
 
     def test_leaf_decorator_without_params(self):
         # Arrange
@@ -39,7 +40,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['command1'])
 
         # Assert
-        self.assertEqual(res, 42)
+        assert res == 42
 
     def test_leaf_decorator_with_different_name(self):
         # Arrange
@@ -56,7 +57,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['list'])
 
         # Assert
-        self.assertEqual(res, 42)
+        assert res == 42
 
     def test_leaf_decorator_with_params(self):
         # Arrange
@@ -74,7 +75,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['command1', '84'])
 
         # Assert
-        self.assertEqual(res, 84)
+        assert res == 84
 
     def test_leaf_decorator_with_positional_params_with_name(self):
         # Arrange
@@ -92,7 +93,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['command1', '84'])
 
         # Assert
-        self.assertEqual(res, 84)
+        assert res == 84
 
     def test_leaf_decorator_with_optional_params_with_name(self):
         # Arrange
@@ -110,7 +111,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['command1', '--import', '84'])
 
         # Assert
-        self.assertEqual(res, 84)
+        assert res == 84
 
     def test_leaf_decorator_with_multiple_params(self):
         # Arrange
@@ -130,7 +131,7 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['command1', '1', '2', '--arg3', '21'])
 
         # Assert
-        self.assertEqual(res, 24)
+        assert res == 24
 
     def test_deep_tree(self):
         # Arrange
@@ -153,4 +154,5 @@ class TestBuild(TestCase):
         res = ct.execute(args = ['very', 'deep', 'command'])
 
         # Assert
-        self.assertEqual(res, 42)
+        assert res == 42
+        assert 'very' in ct._root

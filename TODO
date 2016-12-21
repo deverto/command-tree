@@ -8,26 +8,25 @@ TODO before release v1.0.0
 
 - cleanup:
 
-    - refactor exceptions to sg tree like stuff
-
     - remove all TODO from source
 
     - logging!!
 
 - doc
 
-    - add docstring to all public class and function
+    - lots of examples
 
     - generic doc:
         - why is better than the alternatives
 
-    - docstring abs method ref
+- fix
+
+    - default value is list, but nargs is present, the type is not guessable
+        @tree.argument(help = 'the hook args', nargs = '*', type = str) # TODO: the type is not that type
+
 
 other issues, ideas
 ===================
-
-- default value is list, but nargs is present, the type is not guessable
-    @tree.argument(help = 'the hook args', nargs = '*', type = str) # TODO: the type is not that type
 
 - API for get command tree  (or print)
 
