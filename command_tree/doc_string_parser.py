@@ -25,12 +25,15 @@ class DocStringInfo(object):
         self.argument_infos = {}
 
     def add_argument_info(self, arginfo):
-        """
-        TODO
+        """Add an argument info instance
+
+        Args:
+            arginfo (DocStringInfo.Argument): the info instance
         """
         self.argument_infos[arginfo.name] = arginfo
 
 class ParserBase(object):
+    """Base class to define interface for the doc string parser classes"""
 
     __metaclass__ = ABCMeta
 
@@ -46,10 +49,13 @@ class ParserBase(object):
         """
 
 class GoogleParser(ParserBase):
+    """Parser class for Google style doc string comment format. See: https://google.github.io/styleguide/pyguide.html#Comments"""
 
     _doc_arg_pattern = re.compile("([a-zA-Z0-9_]{1,}) ?([()_.a-zA-Z09]{1,})?: (.+)")
 
     def parse(self, content):
+        """See: :py:func:`command_tree.doc_string_parser.ParserBase.parse`"""
+
         info = DocStringInfo()
 
         parts = content.split("Args:")

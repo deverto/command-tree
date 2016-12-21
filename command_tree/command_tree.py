@@ -9,7 +9,7 @@ from .config import Config
 from .argument import Argument
 
 class CommandTree(object):
-    """TODO
+    """Define the main API for build a tree with :py:mod:`argparse`. It defines decorators and other functions to it.
 
     Args:
         config (Config): config
@@ -57,8 +57,7 @@ class CommandTree(object):
 
     def node_handler(self, func):
         """
-        rename to initializer
-        TODO
+        TODO: rename to initializer
         """
         func._node_handler = True
         return func
@@ -81,7 +80,7 @@ class CommandTree(object):
     def argument(self, *args, **kwargs):
         """Decorator for argument creation
 
-        All arguments will passed to the ArgumentParser.add_argument function
+        All arguments will passed to the :py:func:`argparse.ArgumentParser.add_argument` function
 
         Returns:
             function: wrapper
@@ -97,7 +96,7 @@ class CommandTree(object):
         Args:
             cls (type): the handler class
             items (list): explicit list of all the sub nodes
-            kwargs: all other keyword arguments will passed to the ArgumentParser.add_subparsers().add_parser function
+            kwargs: all other keyword arguments will passed to the :py:class:`argparser.ArgumentParser` constructor
 
         Returns:
             NodeItem: the item descriptor instance
@@ -120,7 +119,7 @@ class CommandTree(object):
         Returns:
             NodeItem: the item descriptor instance
         """
-        item = NodeItem(name, cls, self._next_item_id, items, kwargs, self._config.docstring_parser, self.generate_name_for_item)
+        item = NodeItem(name, cls, self._next_item_id, items, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         cls._item = item
         item.fetch()
         item.parse_doc_string()
@@ -132,14 +131,8 @@ class CommandTree(object):
 
         return item
 
-    def generate_name_for_item(self, source):
-        if self._config.change_underscores_to_hyphens_in_names:
-            return source.replace('_', '-')
-        else:
-            return source.lower()
-
     def generate_name_for_argument(self, args, kwargs, identifier):
-        long_name = self.generate_name_for_item(identifier)
+        long_name = self._generate_name_for_item(identifier)
 
         if self._config.prepend_double_hyphen_prefix_if_arg_has_default and 'default' in kwargs:
             long_name = '--' + long_name
@@ -174,7 +167,7 @@ class CommandTree(object):
         Returns:
             LeafItem: the item descriptor instance
         """
-        item = LeafItem(name, func, self._next_item_id, kwargs, self._config.docstring_parser, self.generate_name_for_item)
+        item = LeafItem(name, func, self._next_item_id, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         func._item = item
         item.parse_doc_string()
 
@@ -231,10 +224,10 @@ class CommandTree(object):
         """Build the parser tree
 
         Args:
-            parser (ArgumentParser): external parser to build
+            parser (argparse.ArgumentParser): external parser to build
 
         Returns:
-            ArgumentParser: the builded parser
+            argparse.ArgumentParser: the builded parser
         """
         parser = parser or ArgumentParser()
 
@@ -246,11 +239,11 @@ class CommandTree(object):
         return parser
 
     def execute(self, parser = None, args = None):
-        """Rum!
+        """Build the parsers and execute it. It will be run the handler function chosed by the user.
 
         Args:
-            parser (ArgumentParser): external parser built by the CommandTree.build
-            args (list): external arguments to parse the argument parser
+            parser (argparse.ArgumentParser): external parser built by the CommandTree.build
+            args (list): external arguments to parse by the argument parser
 
         Returns:
             The return value of the leaf handler function
@@ -306,3 +299,9 @@ class CommandTree(object):
     def _next_item_id(self):
         self._item_counter += 1
         return self._item_counter
+
+    def _generate_name_for_item(self, source):
+        if self._config.change_underscores_to_hyphens_in_names:
+            return source.replace('_', '-')
+        else:
+            return source.lower()

@@ -3,35 +3,40 @@ from abc import ABCMeta, abstractmethod
 
 class AddArgumentHandlerBase(object):
     """
-    TODO
+    Interface for override the default way to use :py:func:`argparser.ArgumenParser.add_argument` function. (Typical usage of this is
+    the MutuallyExclusiveGroup and the ArgumentGroup)
     """
 
     __metaclass__ = ABCMeta
 
     @abstractmethod
     def add(self, parser, *args, **kwargs):
-        """TODO
+        """Add argument to parser
 
         Args:
-            parser (ArgumentParser):
-            args: all pos args for ArgumentParser.add_argument
-            kwargs: all keyword args for ArgumentParser.add_argument
+            parser (argparse.ArgumentParser): the parent parser instance
+            args (list): all pos args for ArgumentParser.add_argument
+            kwargs (dict): all keyword args for ArgumentParser.add_argument
 
         Returns
             argparse.Action: the result of the ArgumentParser.add_argument
         """
 
 class AddArgumentHandler(AddArgumentHandlerBase):
-    """
-    default....
-    """
+    """Add argument by the default way"""
 
     def add(self, parser, *args, **kwargs):
         return parser.add_argument(*args, **kwargs)
 
 class Argument(object):
-    """
-    TODO
+    """Descriptor for an :py:clss:`argparser.ArgumenParser` argument
+
+    Args:
+        identifier (str): name of the the handler function's parameter which is declared in the code
+        args (list): all positional arguments for :py:func:`argparser.ArgumenParser.add_argument`
+        kwargs (dict): all keywird arguments for :py:func:`argparser.ArgumenParser.add_argument`
+        name_generator (callable): will be used for the automatic name generation but only if the name not specified explicitly
+                                   first parameter will be the object name
     """
 
     def __init__(self, identifier, args = None, kwargs = None, name_generator = None):
@@ -43,6 +48,11 @@ class Argument(object):
         self._name_generator = name_generator
 
     def add_to_parser(self, parser):
+        """Add this argument to a parser
+
+        Args:
+            parser (argparse.ArgumentParser) the parent parser
+        """
         if self.action is not None:
             raise Exception("what?")
 

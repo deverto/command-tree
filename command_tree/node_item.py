@@ -2,9 +2,13 @@
 from .item import Item
 
 class NodeItem(Item):
-    """
-    rename to Node
-    TODO
+    """An item what may have sub nodes or leafs. Holding a class type and instance.
+
+    For other args see :py:class:`command_tree.item.Item`
+
+    Args:
+        cls (type): the class handler type
+        items (list): list of :py:class:`command_tree.item.Item` based instances
     """
 
     def __init__(self, name, cls, id, items = None, parser_args = None, docstring_parser = None, name_generator = None):
@@ -23,10 +27,12 @@ class NodeItem(Item):
 
     @property
     def instance(self):
+        """Getter for instance"""
         return self._instance
 
     @instance.setter
     def instance(self, ins):
+        """Setter for instance"""
         self._instance = ins
 
     @property
@@ -35,10 +41,12 @@ class NodeItem(Item):
 
     @property
     def obj_name(self):
+        """See :py:func:`command_tree.item.Item.obj_name`"""
         return self.obj.__name__
 
     @property
     def items(self):
+        """Getter for the list of the sub items"""
         return self._sub_items
 
     def handle(self, kwargs):
@@ -46,6 +54,10 @@ class NodeItem(Item):
         return func(**kwargs)
 
     def fetch(self):
+        """
+        Iterate throught the class attributes (classes or functions) and search for sub items. It is assumes that the sub items has been
+        decorated already.
+        """
         for attr_name in dir(self.obj):
             attr = getattr(self.obj, attr_name)
             if hasattr(attr, "_item"):
@@ -56,6 +68,14 @@ class NodeItem(Item):
                 # TODO raise if exists already
 
     def get_item(self, name):
+        """Get the specfified sub item by name
+
+        Args:
+            name (str): the sub item's name
+
+        Returns:
+            Item: the sub item or None
+        """
         for item in self._sub_items:
             if item.name == name:
                 return item
@@ -71,6 +91,7 @@ class NodeItem(Item):
         return item
 
     def build(self, parser):
+        """See :py:func:`command_tree.item.Item.build`"""
 
         if not len(self._sub_items) and not len(self.arguments):
             raise Exception("what?")

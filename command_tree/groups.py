@@ -2,8 +2,11 @@
 from .argument import AddArgumentHandlerBase
 
 class GroupBase(object):
-    """
-    TODO
+    """Interface class to define group handlers
+
+    Args:
+        command_tree (CommandTree): a CommandTree instance
+        handler (AddArgumentHandlerBase): :py:class:`command_tree.argument.AddArgumentHandlerBase` based class instance
     """
 
     def __init__(self, command_tree, handler):
@@ -16,7 +19,7 @@ class GroupBase(object):
         All arguments will passed to the ArgumentParser.add_argument function
 
         Returns:
-            function: wrapper
+            function: wrapper function
         """
         def wrapper(obj):
             argument_descriptor = self._command_tree.add_argument(obj, *args, **kwargs)
@@ -25,9 +28,7 @@ class GroupBase(object):
         return wrapper
 
 class MutuallyExclusiveGroup(GroupBase):
-    """
-    TODO
-    """
+    """Group for create MutuallyExclusiveGroup as described as :py:func:`argparse.ArgumentParser.add_mutually_exclusive_group`"""
 
     class AddArgumentHandler(AddArgumentHandlerBase):
 
@@ -45,9 +46,7 @@ class MutuallyExclusiveGroup(GroupBase):
         super(MutuallyExclusiveGroup, self).__init__(command_tree, self.AddArgumentHandler(required))
 
 class ArgumentGroup(GroupBase):
-    """
-    TODO
-    """
+    """Group for create MutuallyExclusiveGroup as described as :py:func:`argparse.ArgumentParser.add_argument_group`"""
 
     class AddArgumentHandler(AddArgumentHandlerBase):
 

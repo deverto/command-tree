@@ -2,8 +2,16 @@
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 class Item(object):
-    """
-    TODO
+    """Represents an :py:class:`argparse.ArgumentParser` object
+
+    Args:
+        name (str): the name of the item
+        obj (type): the function or class handler type
+        id (int): unique id for the item, will be use in the ordering
+        parser_args (dict): arguments for :py:class:`argparse.ArgumentParser` constructor
+        docstring_parser (ParserBase): a ParserBase derived class instance
+        name_generator (callable): will be used for the automatic name generation but only if the name not specified explicitly
+                                   first parameter will be the object name
     """
 
     __metaclass__ = ABCMeta
@@ -24,40 +32,68 @@ class Item(object):
 
     @abstractmethod
     def build(self, parser):
-        raise NotImplementedError()
+        """Build the argument parser tree
+
+        Args:
+            parser (argparse.ArgumentParser): a parser instance to build
+        """
 
     @abstractproperty
     def obj_name(self):
-        raise NotImplementedError()  # TODO spread to everywhere
+        """Getter for the class or function name
+
+        Returns:
+            str: the name
+        """
 
     @property
     def parser_args(self):
+        """Getter for parser args"""
         return self._parser_args
 
     @property
     def id(self):
+        """Getter for id"""
         return self._id
 
     @property
     def obj(self):
+        """Getter for the obj: class or function"""
         return self._obj
 
     @property
     def name(self):
+        """Getter for name"""
         return self._name
 
     @property
     def arguments(self):
+        """Getter for argument list
+
+        Returns
+            list: Argument instances
+        """
         return self._obj._item_arguments
 
     def reindex(self, new_id):
+        """Rewrite the id
+
+        Args:
+            new_id (int): the new id
+        """
         self._id = new_id
 
     def add_arguments(self, parser):
+        """Add arguments to a parser
+
+        Args:
+            parser (argparse.ArgumentParser): the parent parser
+        """
         for arg in self.arguments:  # TODO use map
             arg.add_to_parser(parser)
 
     def parse_doc_string(self):
+        """Parse the doc string"""
         if self.obj.__doc__ is None:
             return
 
