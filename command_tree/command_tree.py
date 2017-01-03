@@ -58,9 +58,7 @@ class CommandTree(object):
         return wrapper
 
     def node_handler(self, func):
-        """
-        TODO: rename to initializer
-        """
+        """Decorator for mark a function to handle the childless nodes"""
         func._node_handler = True
         return func
 
@@ -295,7 +293,7 @@ class CommandTree(object):
             else:
                 # node without sub nodes or leafs
                 if not item.has_handler:
-                    raise NodeException("Initialiser not found!", item)
+                    raise NodeException("Handler not found!", item)
 
                 inst_args = {}
                 for arg in item.arguments.values():
