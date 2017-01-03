@@ -201,7 +201,7 @@ class CommandTree(object):
         if inspect.isfunction(obj):
             func = obj
         else:
-            func = obj.__init__  # TODO use node_handler if has ?????
+            func = obj.__init__
 
         func_desc = inspect.getargspec(func)
 
@@ -266,18 +266,15 @@ class CommandTree(object):
         parsed_args = parser.parse_args(args).__dict__
 
         def iter_item(item, parent = None):
-            # TODO: split this func to smaller funcs
             if item is None:
                 return None
             command_key = item.name + '_command'
 
+            handle_args = {identifier: parsed_args[arg.action.dest] for identifier, arg in item.arguments.items()}
+
             if command_key in parsed_args:
                 # it's a node, and it has items in it
-                inst_args = {}  # TODO dict compr
-                for arg in item.arguments.values():
-                    inst_args[arg.identifier] = parsed_args[arg.identifier]
-
-                item.instance = item.obj(**inst_args)
+                item.instance = item.obj(**handle_args)
 
                 command = parsed_args[command_key]
 
@@ -286,22 +283,16 @@ class CommandTree(object):
             elif hasattr(parent, item.obj_name):
                 # it's a leaf
                 func = getattr(parent, item.obj_name)
-                func_args = {}
-                for arg in item.arguments.values():
-                    func_args[arg.identifier] = parsed_args[arg.action.dest]
-                return func(**func_args)
+
+                return func(**handle_args)
             else:
                 # node without sub nodes or leafs
                 if not item.has_handler:
                     raise NodeException("Handler not found!", item)
 
-                inst_args = {}
-                for arg in item.arguments.values():
-                    inst_args[arg.identifier] = parsed_args[arg.identifier]
+                item.instance = item.obj(**handle_args)
 
-                item.instance = item.obj(**inst_args)
-
-                return item.handle(inst_args)
+                return item.handle(handle_args)
 
         return iter_item(self._root)
 

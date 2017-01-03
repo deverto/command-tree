@@ -109,6 +109,68 @@ def test_leaf_decorator_with_optional_params_with_name():
     # Assert
     assert res == 84
 
+def test_node_handler_with_changed_name():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.root()
+    @ct.argument("-i", "--import")
+    class Root(object):
+
+        def __init__(self, import_):
+            pass
+
+        @ct.node_handler
+        def init(self, import_):
+            return int(import_) * 2
+
+    # Act
+    res = ct.execute(args = ['--import', '42'])
+
+    # Assert
+    assert res == 84
+
+def test_node_ctor_with_changed_name():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.root()
+    @ct.argument("-i", "--import")
+    class Root(object):
+
+        def __init__(self, import_):
+            self.import_ = import_
+
+        @ct.leaf()
+        def command1(self):
+            return int(self.import_) * 2
+
+    # Act
+    res = ct.execute(args = ['--import', '42', 'command1'])
+
+    # Assert
+    assert res == 84
+
+def test_node_with_changed_name():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.root()
+    class Root(object):
+
+        @ct.node('import')
+        class import_(object):
+
+            @ct.leaf()
+            def leaf1(self):
+                return 42
+
+    # Act
+    res = ct.execute(args = ['import', 'leaf1'])
+
+    # Assert
+    assert res == 42
+
 def test_leaf_decorator_with_multiple_params():
     # Arrange
     ct = CommandTree()

@@ -6,12 +6,6 @@ TODO before release v1.0.0
 
     - "global" argument (in mutex groups too)
 
-- cleanup:
-
-    - remove all TODO from source
-
-    - logging!!
-
 - doc
 
     - lots of examples
