@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 import inspect
 from functools import partial
+from collections import OrderedDict
 
 from .node_item import NodeItem
 from .leaf_item import LeafItem
@@ -120,14 +121,15 @@ class CommandTree(object):
         Returns:
             NodeItem: the item descriptor instance
         """
-        item = NodeItem(name, cls, self._next_item_id, items, kwargs, self._config.docstring_parser, self._generate_name_for_item)
+        item_args = cls._item_arguments if hasattr(cls, "_item_arguments") else OrderedDict()
+        item = NodeItem(name, cls, self._next_item_id, item_args, items, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         cls._item = item
         item.fetch()
         item.parse_doc_string()
 
         if hasattr(cls.__init__, '__code__'):  # maybe this is a mystic object ctor
             args = len(inspect.getargspec(cls.__init__).args) - 1
-            if args != len(cls._item_arguments):
+            if args != len(item_args):
                 raise NodeException("Call {} times the argument decorator on class '{}' before the node decor".format(args, cls.__name__),
                                     item)
 
@@ -169,14 +171,15 @@ class CommandTree(object):
         Returns:
             LeafItem: the item descriptor instance
         """
-        item = LeafItem(name, func, self._next_item_id, kwargs, self._config.docstring_parser, self._generate_name_for_item)
+        item_args = func._item_arguments if hasattr(func, "_item_arguments") else OrderedDict()
+        item = LeafItem(name, func, self._next_item_id, item_args, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         func._item = item
         item.parse_doc_string()
 
         # check this in the node too
         func_desc = inspect.getargspec(func)
         args = len(func_desc.args) - 1
-        if args != len(func._item_arguments):
+        if args != len(item_args):
             raise LeafException("Call {} times the argument decorator on function '{}' before the leaf decor".format(args, func.__name__),
                                 item)
 
@@ -193,7 +196,7 @@ class CommandTree(object):
             Argument: the argument descriptor instance
         """
         if not hasattr(obj, "_item_arguments"):
-            obj._item_arguments = []
+            obj._item_arguments = OrderedDict()
 
         func = None
 
@@ -219,8 +222,14 @@ class CommandTree(object):
            and self._config.get_argument_type_from_function_default_value_type:
             kwargs['type'] = type(kwargs['default'])
 
+        # The argument descriptors must be stored in the object (class or func), because the object descriptor (Node or Leaf) not created
+        # at this time, because of the CommandTree decorator structure. The "argument" decorator must be under the item decorators
+        # because of psychological reasons. It's looks better. But because of this, the argument decorators being called before node or leaf
+        # decorators so argument descriptors must be stored in somewhere, eg in the object.
         arg = Argument(identifier, args, kwargs, partial(self.generate_name_for_argument, args, kwargs))
-        obj._item_arguments.insert(0, arg)
+        obj._item_arguments[identifier] = arg
+        # prepend...
+        obj._item_arguments.move_to_end(identifier, False)
         return arg
 
     def build(self, parser = None):
@@ -267,7 +276,7 @@ class CommandTree(object):
             if command_key in parsed_args:
                 # it's a node, and it has items in it
                 inst_args = {}  # TODO dict compr
-                for arg in item.arguments:
+                for arg in item.arguments.values():
                     inst_args[arg.identifier] = parsed_args[arg.identifier]
 
                 item.instance = item.obj(**inst_args)
@@ -280,7 +289,7 @@ class CommandTree(object):
                 # it's a leaf
                 func = getattr(parent, item.obj_name)
                 func_args = {}
-                for arg in item.arguments:
+                for arg in item.arguments.values():
                     func_args[arg.identifier] = parsed_args[arg.action.dest]
                 return func(**func_args)
             else:
@@ -289,7 +298,7 @@ class CommandTree(object):
                     raise NodeException("Initialiser not found!", item)
 
                 inst_args = {}
-                for arg in item.arguments:
+                for arg in item.arguments.values():
                     inst_args[arg.identifier] = parsed_args[arg.identifier]
 
                 item.instance = item.obj(**inst_args)

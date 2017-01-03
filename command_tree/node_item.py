@@ -13,8 +13,8 @@ class NodeItem(Item):
         items (list): list of :py:class:`command_tree.item.Item` based instances
     """
 
-    def __init__(self, name, cls, id, items = None, parser_args = None, docstring_parser = None, name_generator = None):
-        super(NodeItem, self).__init__(name, cls, id, parser_args, docstring_parser, name_generator)
+    def __init__(self, name, cls, id, arguments, items = None, parser_args = None, docstring_parser = None, name_generator = None):
+        super(NodeItem, self).__init__(name, cls, id, arguments, parser_args, docstring_parser, name_generator)
         self._sub_items = []
         self._instance = None
         self._handler_func = None
