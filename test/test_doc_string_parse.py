@@ -1,8 +1,8 @@
 
 from unittest import TestCase
 
-from command_tree.node_item import NodeItem
-from command_tree.leaf_item import LeafItem
+from command_tree.node import Node
+from command_tree.leaf import Leaf
 from command_tree.argument import Argument
 from command_tree.doc_string_parser import GoogleParser
 from collections import OrderedDict
@@ -17,7 +17,7 @@ class TestDocStringParse(TestCase):
         class DummyNode(object):
             pass
 
-        item = NodeItem("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
+        item = Node("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -30,7 +30,7 @@ class TestDocStringParse(TestCase):
         class DummyNode(object):
             """Description"""
 
-        item = NodeItem("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
+        item = Node("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -43,7 +43,7 @@ class TestDocStringParse(TestCase):
         class DummyNode(object):
             """Description"""
 
-        item = NodeItem("test", DummyNode, 42, OrderedDict(), parser_args = {"help": "Not-a-description"}, docstring_parser = parser)
+        item = Node("test", DummyNode, 42, OrderedDict(), parser_args = {"help": "Not-a-description"}, docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -58,7 +58,7 @@ class TestDocStringParse(TestCase):
             Description
 
             """
-        item = NodeItem("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
+        item = Node("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -74,7 +74,7 @@ class TestDocStringParse(TestCase):
             Args:
                 arg1: help for arg1
             """
-        item = NodeItem("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
+        item = Node("test", DummyNode, 42, OrderedDict(), docstring_parser = parser)
 
         # Act
         with self.assertRaises(CommandTreeException):
@@ -85,7 +85,7 @@ class TestDocStringParse(TestCase):
         def dummy_method(self):
             """Description"""
 
-        item = LeafItem("test", dummy_method, 42, OrderedDict(), docstring_parser = parser)
+        item = Leaf("test", dummy_method, 42, OrderedDict(), docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -103,7 +103,7 @@ class TestDocStringParse(TestCase):
             """
         args = OrderedDict([("arg1", Argument("arg1"))])
 
-        item = NodeItem("test", DummyNode, 42, args, docstring_parser = parser)
+        item = Node("test", DummyNode, 42, args, docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -124,7 +124,7 @@ class TestDocStringParse(TestCase):
 
         args = OrderedDict([("arg1", Argument("arg1", kwargs = {"help": "heeelp"}))])
 
-        item = NodeItem("test", DummyNode, 42, args, docstring_parser = parser)
+        item = Node("test", DummyNode, 42, args, docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -151,7 +151,7 @@ class TestDocStringParse(TestCase):
             ("arg3", Argument("arg3")),
         ])
 
-        item = NodeItem("test", DummyNode, 42, args, docstring_parser = parser)
+        item = Node("test", DummyNode, 42, args, docstring_parser = parser)
 
         # Act
         item.parse_doc_string()
@@ -181,7 +181,7 @@ class TestDocStringParse(TestCase):
             ("arg2", Argument("arg2")),
         ])
 
-        item = NodeItem("test", DummyNode, 42, args, docstring_parser = parser)
+        item = Node("test", DummyNode, 42, args, docstring_parser = parser)
 
         # Act
         item.parse_doc_string()

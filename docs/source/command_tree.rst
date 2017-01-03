@@ -52,18 +52,18 @@ command_tree.item module
     :undoc-members:
     :show-inheritance:
 
-command_tree.leaf_item module
+command_tree.leaf module
 -----------------------------
 
-.. automodule:: command_tree.leaf_item
+.. automodule:: command_tree.leaf
     :members:
     :undoc-members:
     :show-inheritance:
 
-command_tree.node_item module
+command_tree.node module
 -----------------------------
 
-.. automodule:: command_tree.node_item
+.. automodule:: command_tree.node
     :members:
     :undoc-members:
     :show-inheritance:

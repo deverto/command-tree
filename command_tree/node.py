@@ -3,7 +3,7 @@ from .item import Item
 
 from .exceptions import NodeException
 
-class NodeItem(Item):
+class Node(Item):
     """An item what may have sub nodes or leafs. Holding a class type and instance.
 
     For other args see :py:class:`command_tree.item.Item`
@@ -14,7 +14,7 @@ class NodeItem(Item):
     """
 
     def __init__(self, name, cls, id, arguments, items = None, parser_args = None, docstring_parser = None, name_generator = None):
-        super(NodeItem, self).__init__(name, cls, id, arguments, parser_args, docstring_parser, name_generator)
+        super(Node, self).__init__(name, cls, id, arguments, parser_args, docstring_parser, name_generator)
         self._sub_items = []
         self._instance = None
         self._handler_func = None

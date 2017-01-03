@@ -4,8 +4,8 @@ import inspect
 from functools import partial
 from collections import OrderedDict
 
-from .node_item import NodeItem
-from .leaf_item import LeafItem
+from .node import Node
+from .leaf import Leaf
 from .config import Config
 from .argument import Argument
 from .exceptions import RootNodeException, NodeException, LeafException
@@ -101,7 +101,7 @@ class CommandTree(object):
             kwargs: all other keyword arguments will passed to the :py:class:`argparser.ArgumentParser` constructor
 
         Returns:
-            NodeItem: the item descriptor instance
+            Node: the item descriptor instance
         """
         if self._root is not None:
             raise RootNodeException("The root node was already set", self._root)
@@ -119,10 +119,10 @@ class CommandTree(object):
             kwargs: all other keyword arguments will passed to the ArgumentParser.add_subparsers().add_parser function
 
         Returns:
-            NodeItem: the item descriptor instance
+            Node: the item descriptor instance
         """
         item_args = cls._item_arguments if hasattr(cls, "_item_arguments") else OrderedDict()
-        item = NodeItem(name, cls, self._next_item_id, item_args, items, kwargs, self._config.docstring_parser, self._generate_name_for_item)
+        item = Node(name, cls, self._next_item_id, item_args, items, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         cls._item = item
         item.fetch()
         item.parse_doc_string()
@@ -169,10 +169,10 @@ class CommandTree(object):
             kwargs: all other keyword arguments will passed to the ArgumentParser.add_subparsers().add_parser function
 
         Returns:
-            LeafItem: the item descriptor instance
+            Leaf: the item descriptor instance
         """
         item_args = func._item_arguments if hasattr(func, "_item_arguments") else OrderedDict()
-        item = LeafItem(name, func, self._next_item_id, item_args, kwargs, self._config.docstring_parser, self._generate_name_for_item)
+        item = Leaf(name, func, self._next_item_id, item_args, kwargs, self._config.docstring_parser, self._generate_name_for_item)
         func._item = item
         item.parse_doc_string()
 
