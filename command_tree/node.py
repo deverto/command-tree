@@ -1,6 +1,5 @@
 
 from .item import Item
-
 from .exceptions import NodeException
 
 class Node(Item):
@@ -48,7 +47,12 @@ class Node(Item):
 
     @property
     def items(self):
-        """Getter for the list of the sub items"""
+        """Getter for the list of the sub items
+
+
+        Returns:
+            list: Item based instances
+        """
         return self._sub_items
 
     def handle(self, kwargs):
@@ -110,3 +114,16 @@ class Node(Item):
         for item in sorted(self._sub_items, key = lambda item: item.id):
             sub_parser = subparsers.add_parser(item.name, **item.parser_args)
             item.build(sub_parser)
+
+    def traverse_for_common_arguments(self):
+        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`"""
+
+        for item in self.items:
+            for name, arg in self.arguments.items():
+                # add all common arguments to the sub items
+                if arg.is_common():
+                    if name in item.arguments:
+                        raise NodeException("This argument '{}' is already exists this node, so cannot add a common argument".format(name),
+                                            self)
+                    item.arguments[name] = arg.clone(exclude = ['add_argument_handler'])
+                    item.traverse_for_common_arguments()

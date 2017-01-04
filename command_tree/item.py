@@ -29,6 +29,9 @@ class Item(object):
         self._docstring_parser = docstring_parser
         self._arguments = arguments
 
+        for arg in arguments.values():
+            arg.handler = self
+
         if self._name is None and name_generator:
             self._name = name_generator(self.obj_name)
 
@@ -47,6 +50,10 @@ class Item(object):
         Returns:
             str: the name
         """
+
+    @abstractmethod
+    def traverse_for_common_arguments(self):
+        """Iterate through the arguments and the sub items if has any and do the things to build the common args"""
 
     @property
     def parser_args(self):

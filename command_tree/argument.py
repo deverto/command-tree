@@ -48,6 +48,31 @@ class Argument(object):
         self.action = None
         self.add_argument_handler = AddArgumentHandler()
         self._name_generator = name_generator
+        self._common = False
+        self._handler = None
+
+    def clone(self, exclude = []):
+        attrs = ['identifier', 'args', 'kwargs', 'action', 'add_argument_handler', '_name_generator', '_common', '_handler']
+        arg = Argument(self.identifier)
+        for name in attrs:
+            if name in exclude:
+                continue
+            setattr(arg, name, getattr(self, name))
+        return arg
+
+    @property
+    def handler(self):
+        return self._handler
+
+    @handler.setter
+    def handler(self, value):
+        self._handler = value
+
+    def set_common(self, value = True):
+        self._common = value
+
+    def is_common(self):
+        return self._common
 
     def add_to_parser(self, parser):
         """Add this argument to a parser
@@ -55,7 +80,7 @@ class Argument(object):
         Args:
             parser (argparse.ArgumentParser) the parent parser
         """
-        if self.action is not None:
+        if self.action is not None and not self.is_common():
             raise ArgumentException("Do not call add_to_parser more than once!", self)
 
         args = self.args or self._name_generator(self.identifier) if self._name_generator else [self.identifier]

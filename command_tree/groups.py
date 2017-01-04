@@ -13,6 +13,21 @@ class GroupBase(object):
         self._command_tree = command_tree
         self._handler = handler
 
+    def common_argument(self, *args, **kwargs):
+        """Decorator for argument creation
+
+        All arguments will passed to the ArgumentParser.add_argument function
+
+        Returns:
+            function: wrapper function
+        """
+        def wrapper(obj):
+            argument_descriptor = self._command_tree.add_argument(obj, *args, **kwargs)
+            argument_descriptor.set_common()
+            argument_descriptor.add_argument_handler = self._handler
+            return obj
+        return wrapper
+
     def argument(self, *args, **kwargs):
         """Decorator for argument creation
 

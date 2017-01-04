@@ -1,5 +1,6 @@
 
 from .item import Item
+from .exceptions import LeafException
 
 class Leaf(Item):
     """An item what will not has any sub items, only arguments.
@@ -20,3 +21,14 @@ class Leaf(Item):
     def build(self, parser):
         """See :py:func:`command_tree.item.Item.build`"""
         self.build_arguments(parser)
+
+    def traverse_for_common_arguments(self):
+        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`"""
+        common_args = []
+
+        for name, arg in self.arguments.items():
+            if arg.is_common() and arg.handler is self:
+                common_args.append(arg)
+
+        if common_args:
+            raise LeafException("The common flag has no effect on arguments {} because it is in a leaf".format(common_args), self)

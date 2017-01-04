@@ -2,10 +2,6 @@
 TODO before release v1.0.0
 ==========================
 
-- enh:
-
-    - "global" argument (in mutex groups too)
-
 - doc
 
     - lots of examples

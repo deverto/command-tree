@@ -1,4 +1,4 @@
-
+import logging
 from argparse import ArgumentParser
 import inspect
 from functools import partial
@@ -9,6 +9,8 @@ from .leaf import Leaf
 from .config import Config
 from .argument import Argument
 from .exceptions import RootNodeException, NodeException, LeafException
+
+logger = logging.getLogger(__name__)
 
 class CommandTree(object):
     """Define the main API for build a tree with :py:mod:`argparse`. It defines decorators and other functions to it.
@@ -90,6 +92,20 @@ class CommandTree(object):
             return obj
         return wrapper
 
+    def common_argument(self, *args, **kwargs):
+        """Decorator for argument creation
+
+        All arguments will passed to the :py:func:`argparse.ArgumentParser.add_argument` function
+
+        Returns:
+            function: wrapper
+        """
+        def wrapper(obj):
+            arg = self.add_argument(obj, *args, **kwargs)
+            arg.set_common()
+            return obj
+        return wrapper
+
     def add_root(self, cls, items = None, **kwargs):
         """Add root node to the tree
 
@@ -105,6 +121,7 @@ class CommandTree(object):
             raise RootNodeException("The root node was already set", self._root)
         item = self.add_node(cls, "root", items, **kwargs)
         self._root = item
+        self._root.traverse_for_common_arguments()
         return item
 
     def add_node(self, cls, name = None, items = None, **kwargs):
@@ -270,7 +287,9 @@ class CommandTree(object):
                 return None
             command_key = item.name + '_command'
 
-            handle_args = {identifier: parsed_args[arg.action.dest] for identifier, arg in item.arguments.items()}
+            handle_args = {identifier: parsed_args[arg.action.dest] for identifier, arg in item.arguments.items() if arg.handler is item}
+
+            logger.debug("Gathered argument values for handle item (%s): %s", item, handle_args)
 
             if command_key in parsed_args:
                 # it's a node, and it has items in it
