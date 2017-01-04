@@ -99,7 +99,7 @@ class Node(Item):
         if not len(self._sub_items) and not len(self.arguments):
             raise NodeException("There is no sub nodes or leafs and not even an argument defined!", self)
 
-        self.add_arguments(parser)
+        self.build_arguments(parser)
 
         if not len(self._sub_items):
             return

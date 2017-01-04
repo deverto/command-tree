@@ -85,7 +85,7 @@ class Item(object):
         """
         self._id = new_id
 
-    def add_arguments(self, parser):
+    def build_arguments(self, parser):
         """Add arguments to a parser
 
         Args:

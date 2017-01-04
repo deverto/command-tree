@@ -19,4 +19,4 @@ class Leaf(Item):
 
     def build(self, parser):
         """See :py:func:`command_tree.item.Item.build`"""
-        self.add_arguments(parser)
+        self.build_arguments(parser)
