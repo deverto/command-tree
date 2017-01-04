@@ -234,7 +234,7 @@ class CommandTree(object):
 
         # get_argument_type_from_function_default_value_type
         if 'type' not in kwargs and 'default' in kwargs and 'action' not in kwargs \
-           and self._config.get_argument_type_from_function_default_value_type:
+           and self._config.get_argument_type_from_function_default_value_type and kwargs.get('nargs', '?') == '?':
             kwargs['type'] = type(kwargs['default'])
 
         # The argument descriptors must be stored in the object (class or func), because the object descriptor (Node or Leaf) not created

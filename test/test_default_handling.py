@@ -54,3 +54,21 @@ def test_leaf_decorator_param_with_default():
 
     # Assert
     assert res == 42
+
+def test_get_argument_type_from_function_default_value_type_with_nargs_list():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.root()
+    class Root(object):
+
+        @ct.leaf()
+        @ct.argument("--arg1", nargs = '*')
+        def command1(self, arg1 = []):
+            return arg1
+
+    # Act
+    res = ct.execute(args = ['command1', '--arg1', '21'])
+
+    # Assert
+    assert res == ['21']

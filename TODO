@@ -9,11 +9,6 @@ TODO before release v1.0.0
     - generic doc:
         - why is better than the alternatives
 
-- fix
-
-    - default value is list, but nargs is present, the type is not guessable
-        @tree.argument(help = 'the hook args', nargs = '*', type = str) # TODO: the type is not that type
-
 
 other issues, ideas
 ===================
