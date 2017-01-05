@@ -36,6 +36,14 @@ command_tree.doc_string_parser module
     :undoc-members:
     :show-inheritance:
 
+command_tree.exceptions module
+------------------------------
+
+.. automodule:: command_tree.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 command_tree.groups module
 --------------------------
 
@@ -53,7 +61,7 @@ command_tree.item module
     :show-inheritance:
 
 command_tree.leaf module
------------------------------
+------------------------
 
 .. automodule:: command_tree.leaf
     :members:
@@ -61,7 +69,7 @@ command_tree.leaf module
     :show-inheritance:
 
 command_tree.node module
------------------------------
+------------------------
 
 .. automodule:: command_tree.node
     :members:
