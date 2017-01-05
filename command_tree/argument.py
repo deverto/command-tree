@@ -31,7 +31,7 @@ class AddArgumentHandler(AddArgumentHandlerBase):
         return parser.add_argument(*args, **kwargs)
 
 class Argument(object):
-    """Descriptor for an :py:clss:`argparser.ArgumenParser` argument
+    """Descriptor for an :py:class:`argparser.ArgumentParser` argument
 
     Args:
         identifier (str): name of the the handler function's parameter which is declared in the code
