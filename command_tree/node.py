@@ -28,6 +28,9 @@ class Node(Item):
             item.reindex(start + idx)
             self._sub_items.append(item)
 
+        # add 'parent' property to the handler class
+        cls.parent = property(lambda s: self._parent._instance)
+
     @property
     def instance(self):
         """Getter for instance."""
@@ -116,6 +119,7 @@ class Node(Item):
         for item in sorted(self._sub_items, key = lambda item: item.id):
             sub_parser = subparsers.add_parser(item.name, **item.parser_args)
             item.build(sub_parser)
+            item._parent = self
 
     def traverse_for_common_arguments(self):
         """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`."""

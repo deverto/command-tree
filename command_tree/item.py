@@ -28,6 +28,7 @@ class Item(object):
         self._parser_args = parser_args or {}
         self._docstring_parser = docstring_parser
         self._arguments = arguments
+        self._parent = None
 
         for arg in arguments.values():
             arg.handler = self
