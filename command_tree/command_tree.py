@@ -13,7 +13,9 @@ from .exceptions import RootNodeException, NodeException, LeafException
 logger = logging.getLogger(__name__)
 
 class CommandTree(object):
-    """Define the main API for build a tree with :py:mod:`argparse`. It defines decorators and other functions to it.
+    """Define the main API for build a tree with :py:mod:`argparse`.
+
+    It defines decorators and other functions to it.
 
     Args:
         config (Config): config
@@ -266,7 +268,9 @@ class CommandTree(object):
         return parser
 
     def execute(self, parser = None, args = None):
-        """Build the parsers and execute it. It will be run the handler function chosed by the user.
+        """Build the parsers and execute it.
+
+        It will be run the handler function chosed by the user.
 
         Args:
             parser (argparse.ArgumentParser): external parser built by the CommandTree.build

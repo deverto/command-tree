@@ -3,7 +3,9 @@ from .item import Item
 from .exceptions import NodeException
 
 class Node(Item):
-    """An item what may have sub nodes or leafs. Holding a class type and instance.
+    """An item what may have sub nodes or leafs.
+
+    Holding a class type and instance.
 
     For other args see :py:class:`command_tree.item.Item`
 
@@ -60,9 +62,9 @@ class Node(Item):
         return func(**kwargs)
 
     def fetch(self):
-        """
-        Iterate throught the class attributes (classes or functions) and search for sub items. It is assumes that the sub items has been
-        decorated already.
+        """Iterate throught the class attributes (classes or functions) and search for sub items.
+
+        It is assumes that the sub items has been decorated already.
         """
         for attr_name in dir(self.obj):
             attr = getattr(self.obj, attr_name)

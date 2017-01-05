@@ -4,9 +4,9 @@ from abc import ABCMeta, abstractmethod
 from .exceptions import ArgumentException
 
 class AddArgumentHandlerBase(object):
-    """
-    Interface for override the default way to use :py:func:`argparser.ArgumenParser.add_argument` function. (Typical usage of this is
-    the MutuallyExclusiveGroup and the ArgumentGroup)
+    """Interface for override the default way to use :py:func:`argparser.ArgumenParser.add_argument` function.
+
+    Typical usage of this is the MutuallyExclusiveGroup and the ArgumentGroup.
     """
 
     __metaclass__ = ABCMeta
@@ -38,7 +38,7 @@ class Argument(object):
         args (list): all positional arguments for :py:func:`argparser.ArgumenParser.add_argument`
         kwargs (dict): all keywird arguments for :py:func:`argparser.ArgumenParser.add_argument`
         name_generator (callable): will be used for the automatic name generation but only if the name not specified explicitly
-                                   first parameter will be the object name
+            first parameter will be the object name
     """
 
     def __init__(self, identifier, args = None, kwargs = None, name_generator = None):

@@ -50,7 +50,10 @@ class ParserBase(object):
         """
 
 class GoogleParser(ParserBase):
-    """Parser class for Google style doc string comment format. See: https://google.github.io/styleguide/pyguide.html#Comments"""
+    """Parser class for Google style doc string comment format.
+
+    See: https://google.github.io/styleguide/pyguide.html#Comments
+    """
 
     _doc_arg_pattern = re.compile("([a-zA-Z0-9_]{1,}) ?([()_.a-zA-Z09]{1,})?: (.+)")
 

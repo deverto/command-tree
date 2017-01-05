@@ -15,7 +15,7 @@ class Item(object):
         parser_args (dict): arguments for :py:class:`argparse.ArgumentParser` constructor
         docstring_parser (ParserBase): a ParserBase derived class instance
         name_generator (callable): will be used for the automatic name generation but only if the name not specified explicitly
-                                   first parameter will be the object name
+            first parameter will be the object name
     """
 
     __metaclass__ = ABCMeta
