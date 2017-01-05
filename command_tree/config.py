@@ -2,7 +2,7 @@
 from .doc_string_parser import GoogleParser
 
 class Config(object):
-    """Config holder class for the CommandTree
+    """Config holder class for the CommandTree.
 
     Args:
         docstring_parser (ParserBase): If there is doc declared in the class or function some data from the docstring will be parsed out.

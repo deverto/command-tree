@@ -16,15 +16,15 @@ class Leaf(Item):
 
     @property
     def obj_name(self):
-        """See :py:func:`command_tree.item.Item.obj_name`"""
+        """See :py:func:`command_tree.item.Item.obj_name`."""
         return self.obj.__name__
 
     def build(self, parser):
-        """See :py:func:`command_tree.item.Item.build`"""
+        """See :py:func:`command_tree.item.Item.build`."""
         self.build_arguments(parser)
 
     def traverse_for_common_arguments(self):
-        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`"""
+        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`."""
         common_args = []
 
         for name, arg in self.arguments.items():

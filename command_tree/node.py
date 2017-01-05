@@ -28,12 +28,12 @@ class Node(Item):
 
     @property
     def instance(self):
-        """Getter for instance"""
+        """Getter for instance."""
         return self._instance
 
     @instance.setter
     def instance(self, ins):
-        """Setter for instance"""
+        """Setter for instance."""
         self._instance = ins
 
     @property
@@ -42,12 +42,12 @@ class Node(Item):
 
     @property
     def obj_name(self):
-        """See :py:func:`command_tree.item.Item.obj_name`"""
+        """See :py:func:`command_tree.item.Item.obj_name`."""
         return self.obj.__name__
 
     @property
     def items(self):
-        """Getter for the list of the sub items
+        """Getter for the list of the sub items.
 
 
         Returns:
@@ -75,7 +75,7 @@ class Node(Item):
                 self._handler_func = attr
 
     def get_item(self, name):
-        """Get the specfified sub item by name
+        """Get the specfified sub item by name.
 
         Args:
             name (str): the sub item's name
@@ -98,7 +98,7 @@ class Node(Item):
         return item
 
     def build(self, parser):
-        """See :py:func:`command_tree.item.Item.build`"""
+        """See :py:func:`command_tree.item.Item.build`."""
 
         if not len(self._sub_items) and not len(self.arguments):
             raise NodeException("There is no sub nodes or leafs and not even an argument defined!", self)
@@ -116,7 +116,7 @@ class Node(Item):
             item.build(sub_parser)
 
     def traverse_for_common_arguments(self):
-        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`"""
+        """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`."""
 
         for item in self.items:
             for name, arg in self.arguments.items():

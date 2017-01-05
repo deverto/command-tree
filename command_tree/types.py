@@ -3,7 +3,7 @@ import os
 from argparse import ArgumentTypeError
 
 def valid_file(value):
-    """Function what is can be used as argument type to check the file is exists or not
+    """Function what is can be used as argument type to check the file is exists or not.
 
     Example:
         >>> from argparse import ArgumentParser
@@ -19,7 +19,7 @@ def valid_file(value):
     return value
 
 def valid_dir(value):
-    """Function what is can be used as argument type to check the file is exists or not
+    """Function what is can be used as argument type to check the file is exists or not.
 
     Example:
         >>> from argparse import ArgumentParser

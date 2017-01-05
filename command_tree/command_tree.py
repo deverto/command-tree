@@ -29,7 +29,7 @@ class CommandTree(object):
         return self._root.items
 
     def root(self, items = None, **kwargs):
-        """Special node decorator; it can used only once
+        """Special node decorator; it can used only once.
 
         Args:
             items (list): explicit list of all the sub nodes
@@ -44,7 +44,7 @@ class CommandTree(object):
         return wrapper
 
     def node(self, name = None, items = None, **kwargs):
-        """Decorator for node creation
+        """Decorator for node creation.
 
         Args:
             name (str): the node name
@@ -60,12 +60,12 @@ class CommandTree(object):
         return wrapper
 
     def node_handler(self, func):
-        """Decorator for mark a function to handle the childless nodes"""
+        """Decorator for mark a function to handle the childless nodes."""
         func._node_handler = True
         return func
 
     def leaf(self, name = None, **kwargs):
-        """Decorator for leaf creation
+        """Decorator for leaf creation.
 
         Args:
             name (str): the node name
@@ -80,7 +80,7 @@ class CommandTree(object):
         return wrapper
 
     def argument(self, *args, **kwargs):
-        """Decorator for argument creation
+        """Decorator for argument creation.
 
         All arguments will passed to the :py:func:`argparse.ArgumentParser.add_argument` function
 
@@ -93,7 +93,7 @@ class CommandTree(object):
         return wrapper
 
     def common_argument(self, *args, **kwargs):
-        """Decorator for argument creation
+        """Decorator for argument creation.
 
         All arguments will passed to the :py:func:`argparse.ArgumentParser.add_argument` function
 
@@ -107,7 +107,7 @@ class CommandTree(object):
         return wrapper
 
     def add_root(self, cls, items = None, **kwargs):
-        """Add root node to the tree
+        """Add root node to the tree.
 
         Args:
             cls (type): the handler class
@@ -125,7 +125,7 @@ class CommandTree(object):
         return item
 
     def add_node(self, cls, name = None, items = None, **kwargs):
-        """Add node to the tree
+        """Add node to the tree.
 
         Args:
             cls (type): the handler class
@@ -175,7 +175,7 @@ class CommandTree(object):
         return res
 
     def add_leaf(self, func, name = None, **kwargs):
-        """Add leaf to the tree
+        """Add leaf to the tree.
 
         Args:
             func (function): the handler function
@@ -201,7 +201,7 @@ class CommandTree(object):
         return item
 
     def add_argument(self, obj, *args, **kwargs):
-        """Decorator for argument creation
+        """Decorator for argument creation.
 
         Args:
             obj: class or function handler
@@ -248,7 +248,7 @@ class CommandTree(object):
         return arg
 
     def build(self, parser = None):
-        """Build the parser tree
+        """Build the parser tree.
 
         Args:
             parser (argparse.ArgumentParser): external parser to build

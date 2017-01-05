@@ -3,14 +3,14 @@ import re
 from abc import ABCMeta, abstractmethod
 
 class DocStringInfo(object):
-    """Structured info about the object's docstring
+    """Structured info about the object's docstring.
 
     Args:
         description (str): the object description, typically the first line of the docstring
     """
 
     class Argument(object):
-        """Structured info about one argument
+        """Structured info about one argument.
 
         Args:
             name (str): the name of the argument
@@ -26,7 +26,7 @@ class DocStringInfo(object):
         self.argument_infos = {}
 
     def add_argument_info(self, arginfo):
-        """Add an argument info instance
+        """Add an argument info instance.
 
         Args:
             arginfo (DocStringInfo.Argument): the info instance
@@ -40,7 +40,7 @@ class ParserBase(object):
 
     @abstractmethod
     def parse(self, content):
-        """Parse the docstring content
+        """Parse the docstring content.
 
         Args:
             content (str): the whole docstring content
@@ -55,7 +55,7 @@ class GoogleParser(ParserBase):
     _doc_arg_pattern = re.compile("([a-zA-Z0-9_]{1,}) ?([()_.a-zA-Z09]{1,})?: (.+)")
 
     def parse(self, content):
-        """See: :py:func:`command_tree.doc_string_parser.ParserBase.parse`"""
+        """See: :py:func:`command_tree.doc_string_parser.ParserBase.parse`."""
 
         info = DocStringInfo()
 

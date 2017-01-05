@@ -13,25 +13,25 @@ class AddArgumentHandlerBase(object):
 
     @abstractmethod
     def add(self, parser, *args, **kwargs):
-        """Add argument to parser
+        """Add argument to parser.
 
         Args:
             parser (argparse.ArgumentParser): the parent parser instance
             args (list): all pos args for ArgumentParser.add_argument
             kwargs (dict): all keyword args for ArgumentParser.add_argument
 
-        Returns
+        Returns:
             argparse.Action: the result of the ArgumentParser.add_argument
         """
 
 class AddArgumentHandler(AddArgumentHandlerBase):
-    """Add argument by the default way"""
+    """Add argument by the default way."""
 
     def add(self, parser, *args, **kwargs):
         return parser.add_argument(*args, **kwargs)
 
 class Argument(object):
-    """Descriptor for an :py:class:`argparser.ArgumentParser` argument
+    """Descriptor for an :py:class:`argparser.ArgumentParser` argument.
 
     Args:
         identifier (str): name of the the handler function's parameter which is declared in the code
@@ -75,7 +75,7 @@ class Argument(object):
         return self._common
 
     def add_to_parser(self, parser):
-        """Add this argument to a parser
+        """Add this argument to a parser.
 
         Args:
             parser (argparse.ArgumentParser) the parent parser

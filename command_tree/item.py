@@ -5,7 +5,7 @@ from collections import OrderedDict
 from .exceptions import CommandTreeException
 
 class Item(object):
-    """Represents an :py:class:`argparse.ArgumentParser` object
+    """Represents an :py:class:`argparse.ArgumentParser` object.
 
     Args:
         name (str): the name of the item
@@ -37,7 +37,7 @@ class Item(object):
 
     @abstractmethod
     def build(self, parser):
-        """Build the argument parser tree
+        """Build the argument parser tree.
 
         Args:
             parser (argparse.ArgumentParser): a parser instance to build
@@ -45,7 +45,7 @@ class Item(object):
 
     @abstractproperty
     def obj_name(self):
-        """Getter for the class or function name
+        """Getter for the class or function name.
 
         Returns:
             str: the name
@@ -53,11 +53,11 @@ class Item(object):
 
     @abstractmethod
     def traverse_for_common_arguments(self):
-        """Iterate through the arguments and the sub items if has any and do the things to build the common args"""
+        """Iterate through the arguments and the sub items if has any and do the things to build the common args."""
 
     @property
     def parser_args(self):
-        """Getter for parser args"""
+        """Getter for parser args."""
         return self._parser_args
 
     @property
@@ -67,17 +67,17 @@ class Item(object):
 
     @property
     def obj(self):
-        """Getter for the obj: class or function"""
+        """Getter for the obj: class or function."""
         return self._obj
 
     @property
     def name(self):
-        """Getter for name"""
+        """Getter for name."""
         return self._name
 
     @property
     def arguments(self):
-        """Getter for argument list
+        """Getter for argument list.
 
         Returns
             OrderedDict: str -> Argument instances
@@ -85,7 +85,7 @@ class Item(object):
         return self._arguments
 
     def reindex(self, new_id):
-        """Rewrite the id
+        """Rewrite the id.
 
         Args:
             new_id (int): the new id
@@ -93,7 +93,7 @@ class Item(object):
         self._id = new_id
 
     def build_arguments(self, parser):
-        """Add arguments to a parser
+        """Add arguments to a parser.
 
         Args:
             parser (argparse.ArgumentParser): the parent parser
