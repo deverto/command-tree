@@ -1,5 +1,6 @@
 import pytest
 from command_tree import CommandTree, ArgumentGroup
+from command_tree.exceptions import NodeException, LeafException
 
 def test_use_common_arg():
     # Arrange
@@ -142,3 +143,34 @@ def test_try_reach_not_common_args():
     # Act & Assert
     with pytest.raises(AttributeError):
         ct.execute(args = ['-d', 'node1', 'command1'])
+
+def test_try_redefine_common_argument():
+    # Arrange
+    ct = CommandTree()
+
+    # Act & Assert
+    with pytest.raises(NodeException):
+        @ct.root()
+        @ct.common_argument('-d', '--debug', action = 'store_true', default = False)
+        class Root(object):
+            def __init__(self, debug):
+                self.debug = debug
+
+            @ct.leaf()
+            @ct.argument('-d', '--debug', action = 'store_true', default = False)
+            def command1(self, debug):
+                return debug
+
+def test_try_define_common_argument_in_leaf():
+    # Arrange
+    ct = CommandTree()
+
+    # Act & Assert
+    with pytest.raises(LeafException):
+        @ct.root()
+        class Root(object):
+
+            @ct.leaf()
+            @ct.common_argument('-d', '--debug', action = 'store_true', default = False)
+            def command1(self, debug):
+                return debug

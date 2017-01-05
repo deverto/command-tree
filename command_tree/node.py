@@ -174,4 +174,4 @@ class Node(Item):
                         raise NodeException("This argument '{}' is already exists this node, so cannot add a common argument".format(name),
                                             self)
                     item.arguments[name] = arg.clone(exclude = ['add_argument_handler'])
-                    item.traverse_for_common_arguments()
+            item.traverse_for_common_arguments()

@@ -1,25 +1,6 @@
-
+import pytest
 from command_tree import CommandTree
-
-def test_node_decorator_with_handler():
-    # Arrange
-    ct = CommandTree()
-
-    @ct.root()
-    @ct.argument('-v', '--version', action = 'store_true', default = False)
-    class Root(object):
-        def __init__(self, version):
-            pass
-
-        @ct.node_handler
-        def init(self, version):
-            return "42.0"
-
-    # Act
-    res = ct.execute(args = ['-v'])
-
-    # Assert
-    assert res == "42.0"
+from command_tree.exceptions import NodeException
 
 def test_leaf_decorator_without_params():
     # Arrange
@@ -109,27 +90,6 @@ def test_leaf_decorator_with_optional_params_with_name():
     # Assert
     assert res == 84
 
-def test_node_handler_with_changed_name():
-    # Arrange
-    ct = CommandTree()
-
-    @ct.root()
-    @ct.argument("-i", "--import")
-    class Root(object):
-
-        def __init__(self, import_):
-            pass
-
-        @ct.node_handler
-        def init(self, import_):
-            return int(import_) * 2
-
-    # Act
-    res = ct.execute(args = ['--import', '42'])
-
-    # Assert
-    assert res == 84
-
 def test_node_ctor_with_changed_name():
     # Arrange
     ct = CommandTree()
@@ -214,3 +174,15 @@ def test_deep_tree():
     # Assert
     assert res == 42
     assert 'very' in ct._root
+
+def test_try_build_empty_tree():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.root()
+    class Root(object):
+        pass
+
+    # Act & Assert
+    with pytest.raises(NodeException):
+        ct.build()
