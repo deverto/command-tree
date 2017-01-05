@@ -4,13 +4,7 @@ import pytest
 
 from command_tree import CommandTree, MutuallyExclusiveGroup
 
-class ArgumentParserError(Exception):
-    pass
-
-# to prevent ArgumentParser to call the sys.exit need a little override
-class ThrowingArgumentParser(ArgumentParser):
-    def error(self, message):
-        raise ArgumentParserError(message)
+from .throwing_argumentparser import ThrowingArgumentParser, ArgumentParserError
 
 def test_mutex_group_with_params():
 

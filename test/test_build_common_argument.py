@@ -15,8 +15,13 @@ def test_use_common_arg():
         def command1(self):
             return self.debug
 
+        @ct.leaf()
+        def command2(self):
+            return self.debug
+
     # Act
     res = ct.execute(args = ['command1', '-d'])
+    res = ct.execute(args = ['command2', '-d'])
 
     # Assert
     assert res
