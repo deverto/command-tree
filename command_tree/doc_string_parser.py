@@ -16,6 +16,7 @@ class DocStringInfo(object):
             name (str): the name of the argument
             help (str): the description of the argument
         """
+
         def __init__(self, name, help = None):
             self.name = name
             self.help = help

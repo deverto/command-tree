@@ -31,6 +31,7 @@ class Config(object):
                                                     with a custom mapping. If this value is {"arg1": "a1"}, the generated argument name
                                                     will be '-a1'.
     """
+
     def __init__(self,
                  docstring_parser = GoogleParser(),
                  get_default_from_function_param = True,
