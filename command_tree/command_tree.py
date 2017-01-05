@@ -208,7 +208,7 @@ class CommandTree(object):
             args, kwargs: All other arguments will passed to the ArgumentParser.add_argument function
 
         Returns:
-            Argument: the argument descriptor instance
+            argument.Argument: the argument descriptor instance
         """
         if not hasattr(obj, "_item_arguments"):
             obj._item_arguments = OrderedDict()
