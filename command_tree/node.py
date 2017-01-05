@@ -2,6 +2,30 @@
 from .item import Item
 from .exceptions import NodeException
 
+class CommonArgumentProxy(object):
+    def __init__(self, node):
+        self._node = node
+
+    def __getattr__(self, name):
+
+        def _search(node):
+            for arg in node.arguments.values():
+                if not arg.is_common():
+                    continue
+                if name in node.instance_arguments:
+                    return node.instance_arguments[name]
+
+            return _search(node.parent) if node.parent else None
+
+        value = _search(self._node)
+
+        print(value)
+
+        if value is None:
+            raise AttributeError("Attribute '{}' does not exists".format(name))
+
+        return value
+
 class Node(Item):
     """An item what may have sub nodes or leafs.
 
@@ -19,6 +43,8 @@ class Node(Item):
         self._sub_items = []
         self._instance = None
         self._handler_func = None
+        self._common_arg_proxy = CommonArgumentProxy(self)
+        self._instance_arguments = {}
         extra_items = items or []
 
         # need to reindex the items because the original order may comes from import order
@@ -31,15 +57,13 @@ class Node(Item):
         # add 'parent' property to the handler class
         cls.parent = property(lambda s: self._parent._instance)
 
+        # add 'common' property to the handler class
+        cls.common = property(lambda s: self._common_arg_proxy)
+
     @property
     def instance(self):
         """Getter for instance."""
         return self._instance
-
-    @instance.setter
-    def instance(self, ins):
-        """Setter for instance."""
-        self._instance = ins
 
     @property
     def has_handler(self):
@@ -59,6 +83,24 @@ class Node(Item):
             list: Item based instances
         """
         return self._sub_items
+
+    @property
+    def instance_arguments(self):
+        """Getter for the instance arguments.
+
+        Returns:
+            dict: the handler constructor arguments
+        """
+        return self._instance_arguments
+
+    @property
+    def parent(self):
+        return self._parent
+
+    def create_handler_instance(self, arguments):
+        """TODO"""
+        self._instance = self._obj(**arguments)
+        self._instance_arguments = arguments
 
     def handle(self, kwargs):
         func = getattr(self._instance, self._handler_func.__name__)

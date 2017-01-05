@@ -297,7 +297,7 @@ class CommandTree(object):
 
             if command_key in parsed_args:
                 # it's a node, and it has items in it
-                item.instance = item.obj(**handle_args)
+                item.create_handler_instance(handle_args)
 
                 command = parsed_args[command_key]
 
@@ -313,7 +313,7 @@ class CommandTree(object):
                 if not item.has_handler:
                     raise NodeException("Handler not found!", item)
 
-                item.instance = item.obj(**handle_args)
+                item.create_handler_instance(handle_args)
 
                 return item.handle(handle_args)
 
