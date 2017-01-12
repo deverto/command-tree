@@ -43,6 +43,54 @@ def test_node_handler_with_changed_name():
     # Assert
     assert res == 84
 
+def test_node_decorator_with_handler_with_commands():
+    # Arrange
+    ct = CommandTree()
+
+    @ct.optional
+    @ct.root()
+    @ct.argument('-v', '--version', action = 'store_true', default = False)
+    class Root(object):
+        def __init__(self, version):
+            pass
+
+        @ct.node_handler
+        def init(self, version):
+            return "42.0"
+
+        @ct.leaf()
+        def command1(self):
+            return "1"
+
+        @ct.leaf()
+        def command2(self):
+            return "2"
+
+    # Act
+    res_ver = ct.execute(args = ['-v'])
+    res_cmd1 = ct.execute(args = ['command1'])
+
+    # Assert
+    assert res_ver == "42.0"
+    assert res_cmd1 == "1"
+
+def test_childless_node_decorator_with_handler():
+    # Arrange
+    ct = CommandTree()
+
+    # Act & Assert
+    with pytest.raises(NodeException):
+        @ct.optional
+        @ct.root()
+        @ct.argument('-v', '--version', action = 'store_true', default = False)
+        class Root(object):
+            def __init__(self, version):
+                pass
+
+            @ct.node_handler
+            def init(self, version):
+                return "42.0"
+
 def test_use_decorator_with_more_than_once():
     # Arrange
     ct = CommandTree()

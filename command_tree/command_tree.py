@@ -8,7 +8,7 @@ from .node import Node
 from .leaf import Leaf
 from .config import Config
 from .argument import Argument
-from .exceptions import RootNodeException, NodeException, LeafException
+from .exceptions import RootNodeException, NodeException, LeafException, CommandTreeException
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +107,30 @@ class CommandTree(object):
             arg = self.add_argument(obj, *args, **kwargs)
             arg.set_common()
             return obj
+        return wrapper
+
+    def optional(self, cls):
+        """Decorator for optional subparsers."""
+        if not hasattr(cls, '_item'):
+            raise CommandTreeException("Use this decorator only on a node. (or maybe used before the node decorator?)")
+        if not len(cls._item.items):
+            raise NodeException("This decorator is pointless on a childless node.", cls._item)
+        cls._item.required = False
+        return cls
+
+    def subparser_arguments(self, **kwargs):
+        """Decorator for set argument to the :py:func:`ArgumentParser.add_subparsers` created by the node.
+
+        All keyword argument will passed to the :py:func:`ArgumentParser.add_subparsers`
+
+        Returns:
+            function: wrapper
+        """
+        def wrapper(cls):
+            if not hasattr(cls, '_item'):
+                raise CommandTreeException("Use this decorator only on a node. (or maybe used before the node decorator?)")
+            cls._item.set_subparser_arguments(kwargs)
+            return cls
         return wrapper
 
     def add_root(self, cls, items = None, **kwargs):
@@ -307,7 +331,7 @@ class CommandTree(object):
 
                 command = parsed_args[command_key]
 
-                return iter_item(item[command], item.instance)
+                return iter_item(item[command], item.instance) if command in item else item.handle(handle_args)
 
             elif hasattr(parent, item.obj_name):
                 # it's a leaf
@@ -316,9 +340,6 @@ class CommandTree(object):
                 return func(**handle_args)
             else:
                 # node without sub nodes or leafs
-                if not item.has_handler:
-                    raise NodeException("Handler not found!", item)
-
                 item.create_handler_instance(handle_args)
 
                 return item.handle(handle_args)

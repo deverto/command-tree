@@ -46,6 +46,8 @@ class Node(Item):
         self._common_arg_proxy = CommonArgumentProxy(self)
         self._instance_arguments = {}
         extra_items = items or []
+        self._subparser_args = {}
+        self._required = True
 
         # need to reindex the items because the original order may comes from import order
         start = len(extra_items) * -1
@@ -97,12 +99,35 @@ class Node(Item):
     def parent(self):
         return self._parent
 
+    @property
+    def required(self):
+        return self._required
+
+    @required.setter
+    def required(self, val):
+        """Set the required flag for the subparser
+
+        Args:
+            val (bool): value
+        """
+        self._required = val
+
+    def set_subparser_arguments(self, kwargs):
+        """Set subparser arguments
+
+        Args:
+            kwargs (dict): key-value pairs for :py:func:`ArgumentParser.add_subparsers`
+        """
+        self._subparser_args = kwargs
+
     def create_handler_instance(self, arguments):
         """TODO"""
         self._instance = self._obj(**arguments)
         self._instance_arguments = arguments
 
     def handle(self, kwargs):
+        if not self._handler_func:
+            raise NodeException("Handler not found!", self)
         func = getattr(self._instance, self._handler_func.__name__)
         return func(**kwargs)
 
@@ -155,8 +180,15 @@ class Node(Item):
         if not len(self._sub_items):
             return
         dest = self.name + "_command"
-        subparsers = parser.add_subparsers(dest = dest, metavar = "subcommand")
-        subparsers.required = True
+
+        if 'dest' in self._subparser_args:
+            raise NodeException("The subparser's 'dest' is reserved for internal use by the command-tree.", self)
+        if 'metavar' not in self._subparser_args:
+            self._subparser_args['metavar'] = "subcommand"
+
+        subparsers = parser.add_subparsers(dest = dest, **self._subparser_args)
+        if self.required:
+            subparsers.required = True
 
         for item in sorted(self._sub_items, key = lambda item: item.id):
             sub_parser = subparsers.add_parser(item.name, **item.parser_args)
