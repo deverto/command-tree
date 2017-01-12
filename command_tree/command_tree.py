@@ -25,6 +25,7 @@ class CommandTree(object):
         self._root = None
         self._item_counter = 0
         self._config = config or Config()
+        self._parser = None
 
     @property
     def items(self):
@@ -258,12 +259,17 @@ class CommandTree(object):
         Returns:
             argparse.ArgumentParser: the builded parser
         """
+        if self._parser and not parser:
+            return self._parser
+
         parser = parser or ArgumentParser()
 
         if not self._root:
             raise RootNodeException("Root node is not defined!")
 
         self._root.build(parser)
+
+        self._parser = parser
 
         return parser
 
