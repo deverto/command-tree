@@ -10,5 +10,7 @@ setup(
     license = "MIT",
     install_requires = [
     ],
-    packages = find_packages(),
+    packages = [
+        'command_tree',
+    ],
 )
