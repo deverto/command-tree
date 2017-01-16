@@ -1,4 +1,4 @@
-from subprocess import check_output
+from subprocess import Popen, PIPE
 import shlex
 import os
 
@@ -13,6 +13,9 @@ def run_simple(source, args = ''):
 
     run_args = ['python', file_path] + shlex.split(args)
 
-    res = check_output(run_args)
+    with Popen(run_args, stdout = PIPE, stderr = PIPE) as process:
+        stdout, stderr = process.communicate()
+
+    res = stdout + stderr
 
     return res.decode('utf-8').strip()

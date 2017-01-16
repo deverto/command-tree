@@ -2,12 +2,15 @@
 TODO before release v1.0.0
 ==========================
 
+- enh
+
+- fix
+
 - doc
 
     - lots of examples
-
-    - generic doc:
-        - why is better than the alternatives
+        - groups
+        - common args
 
 
 other issues, ideas
