@@ -1,6 +1,8 @@
 import pytest
-from command_tree import CommandTree, ArgumentGroup
+from command_tree import CommandTree, ArgumentGroup, MutuallyExclusiveGroup
 from command_tree.exceptions import NodeException, LeafException
+
+from .throwing_argumentparser import ThrowingArgumentParser, ArgumentParserError
 
 def test_use_common_arg():
     # Arrange
@@ -174,3 +176,28 @@ def test_try_define_common_argument_in_leaf():
             @ct.common_argument('-d', '--debug', action = 'store_true', default = False)
             def command1(self, debug):
                 return debug
+
+def test_common_and_mutex_group():
+    # Arrange
+    ct = CommandTree()
+
+    mutex = MutuallyExclusiveGroup(ct)
+
+    @ct.root()
+    @mutex.common_argument("--foo")
+    @mutex.common_argument("--bar")
+    class Root(object):
+
+        def __init__(self, foo = 42, bar = 21):
+            pass
+
+        @ct.leaf()
+        def add(self):
+            return self.common.foo + self.common.bar
+
+    # Act & Assert
+    with pytest.raises(ArgumentParserError) as err:
+        res = ct.execute(ct.build(ThrowingArgumentParser()), args = ['add', '--foo', '1', '--bar', '2'])
+
+    # yeah, it not so scientific, but every error in the ArgumentParser is ArgumentError...
+    assert "argument --bar: not allowed with argument --foo" == str(err.value)

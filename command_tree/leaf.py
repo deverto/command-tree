@@ -28,7 +28,7 @@ class Leaf(Item):
         common_args = []
 
         for name, arg in self.arguments.items():
-            if arg.is_common() and arg.handler is self:
+            if arg.is_common() and arg.item is self:
                 common_args.append(arg)
 
         if common_args:

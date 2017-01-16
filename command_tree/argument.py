@@ -24,11 +24,18 @@ class AddArgumentHandlerBase(object):
             argparse.Action: the result of the ArgumentParser.add_argument
         """
 
+    @abstractmethod
+    def clone(self):
+        """Return a new instance the current class"""
+
 class AddArgumentHandler(AddArgumentHandlerBase):
     """Add argument by the default way."""
 
     def add(self, parser, *args, **kwargs):
         return parser.add_argument(*args, **kwargs)
+
+    def clone(self):
+        return AddArgumentHandler()
 
 class Argument(object):
     """Descriptor for an :py:class:`argparser.ArgumentParser` argument.
@@ -49,24 +56,26 @@ class Argument(object):
         self.add_argument_handler = AddArgumentHandler()
         self._name_generator = name_generator
         self._common = False
-        self._handler = None
+        self._item = None
 
     def clone(self, exclude = []):
-        attrs = ['identifier', 'args', 'kwargs', 'action', 'add_argument_handler', '_name_generator', '_common', '_handler']
+        attrs = ['identifier', 'args', 'kwargs', 'action', 'add_argument_handler', '_name_generator', '_common', '_item']
         arg = Argument(self.identifier)
         for name in attrs:
             if name in exclude:
                 continue
             setattr(arg, name, getattr(self, name))
+        if 'add_argument_handler' not in exclude:
+            arg.add_argument_handler = self.add_argument_handler.clone()
         return arg
 
     @property
-    def handler(self):
-        return self._handler
+    def item(self):
+        return self._item
 
-    @handler.setter
-    def handler(self, value):
-        self._handler = value
+    @item.setter
+    def item(self, value):
+        self._item = value
 
     def set_common(self, value = True):
         self._common = value

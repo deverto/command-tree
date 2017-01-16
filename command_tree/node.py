@@ -19,8 +19,6 @@ class CommonArgumentProxy(object):
 
         value = _search(self._node)
 
-        print(value)
-
         if value is None:
             raise AttributeError("Attribute '{}' does not exists".format(name))
 
@@ -199,11 +197,25 @@ class Node(Item):
         """See :py:func:`command_tree.item.Item.traverse_for_common_arguments`."""
 
         for item in self.items:
+            add_argument_handler = None
+            new_add_argument_handler = None
             for name, arg in self.arguments.items():
                 # add all common arguments to the sub items
                 if arg.is_common():
                     if name in item.arguments:
                         raise NodeException("This argument '{}' is already exists this node, so cannot add a common argument".format(name),
                                             self)
-                    item.arguments[name] = arg.clone(exclude = ['add_argument_handler'])
+
+                    new_arg = arg.clone(exclude = ['add_argument_handler'])
+
+                    if arg.add_argument_handler == add_argument_handler:
+                        new_arg.add_argument_handler = new_add_argument_handler
+                    else:
+                        new_arg.add_argument_handler = arg.add_argument_handler.clone()
+                        new_add_argument_handler = new_arg.add_argument_handler
+
+                    add_argument_handler = arg.add_argument_handler
+
+                    item.arguments[name] = new_arg
+
             item.traverse_for_common_arguments()

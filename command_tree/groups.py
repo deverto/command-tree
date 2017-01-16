@@ -1,5 +1,5 @@
 
-from .argument import AddArgumentHandlerBase
+from .argument import AddArgumentHandlerBase, Argument
 
 class GroupBase(object):
     """Interface class to define group handlers.
@@ -11,7 +11,7 @@ class GroupBase(object):
 
     def __init__(self, command_tree, handler):
         self._command_tree = command_tree
-        self._handler = handler
+        self._add_argument_handler = handler
 
     def common_argument(self, *args, **kwargs):
         """Decorator for argument creation.
@@ -24,7 +24,7 @@ class GroupBase(object):
         def wrapper(obj):
             argument_descriptor = self._command_tree.add_argument(obj, *args, **kwargs)
             argument_descriptor.set_common()
-            argument_descriptor.add_argument_handler = self._handler
+            argument_descriptor.add_argument_handler = self._add_argument_handler
             return obj
         return wrapper
 
@@ -38,7 +38,7 @@ class GroupBase(object):
         """
         def wrapper(obj):
             argument_descriptor = self._command_tree.add_argument(obj, *args, **kwargs)
-            argument_descriptor.add_argument_handler = self._handler
+            argument_descriptor.add_argument_handler = self._add_argument_handler
             return obj
         return wrapper
 
@@ -50,6 +50,9 @@ class MutuallyExclusiveGroup(GroupBase):
         def __init__(self, required):
             self._required = required
             self._group = None
+
+        def clone(self):
+            return type(self)(self._required)
 
         def add(self, parser, *args, **kwargs):
             if self._group is None:
@@ -69,6 +72,9 @@ class ArgumentGroup(GroupBase):
             self._group = None
             self._title = title
             self._description = description
+
+        def clone(self):
+            return type(self)(self._title, self._description)
 
         def add(self, parser, *args, **kwargs):
             if self._group is None:

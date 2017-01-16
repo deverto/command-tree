@@ -31,7 +31,7 @@ class Item(object):
         self._parent = None
 
         for arg in arguments.values():
-            arg.handler = self
+            arg.item = self
 
         if self._name is None and name_generator:
             self._name = name_generator(self.obj_name)

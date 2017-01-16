@@ -321,7 +321,7 @@ class CommandTree(object):
                 return None
             command_key = item.name + '_command'
 
-            handle_args = {identifier: parsed_args[arg.action.dest] for identifier, arg in item.arguments.items() if arg.handler is item}
+            handle_args = {identifier: parsed_args[arg.action.dest] for identifier, arg in item.arguments.items() if arg.item is item}
 
             logger.debug("Gathered argument values for handle item (%s): %s", item, handle_args)
 
