@@ -1,16 +1,7 @@
-from setuptools import setup, find_packages
+import json
+from setuptools import setup
 
-setup(
-    name = "command-tree",
-    version = "0.5.0",
-    description = "Builds command tree on argparse.ArgumentParser bases for create command line interface",
-    author = "Deverto Systems LTD",
-    author_email = "admin@deverto.com",
-    url = "http://gitlab.deverto/python-utils/command-tree",
-    license = "MIT",
-    install_requires = [
-    ],
-    packages = [
-        'command_tree',
-    ],
-)
+with open('setup.json') as f:
+    data = json.load(f)
+
+setup(**data)
