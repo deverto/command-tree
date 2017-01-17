@@ -1,12 +1,11 @@
 from command_tree import CommandTree, ArgumentGroup, MutuallyExclusiveGroup
 
-# Arrange
 tree = CommandTree()
 
 @tree.root()
 class Root(object):
 
-    arg_grp = ArgumentGroup(tree, "camel")
+    arg_grp = ArgumentGroup(tree, "platypus")
 
     mutex = MutuallyExclusiveGroup(tree, required = True, argument_group = arg_grp)
 
