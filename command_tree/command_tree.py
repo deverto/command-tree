@@ -176,8 +176,8 @@ class CommandTree(object):
         if hasattr(cls.__init__, '__code__'):  # maybe this is a mystic object ctor
             args = len(inspect.getargspec(cls.__init__).args) - 1
             if args != len(item_args):
-                raise NodeException("Call {} times the argument decorator on class '{}' before the node decor".format(args, cls.__name__),
-                                    item)
+                raise NodeException("The number of argument decorators ({}) is not equal the number of arguments ({})"
+                                    " of __init__ of class '{}'.".format(args, len(item_args), cls.__name__), item)
 
         return item
 
@@ -356,7 +356,8 @@ class CommandTree(object):
         return self._item_counter
 
     def _generate_name_for_item(self, source):
+        source = source.lower()
         if self._config.change_underscores_to_hyphens_in_names:
             return source.replace('_', '-')
         else:
-            return source.lower()
+            return source
