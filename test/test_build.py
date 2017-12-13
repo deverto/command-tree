@@ -186,3 +186,33 @@ def test_try_build_empty_tree():
     # Act & Assert
     with pytest.raises(NodeException):
         ct.build()
+
+def test_merge_external_tree():
+
+    # Arrange
+    ct_ext = CommandTree()
+
+    @ct_ext.root()
+    class ExtRoot(object):
+
+        @ct_ext.node()
+        class Config(object):
+
+            @ct_ext.leaf()
+            def check(self):
+                return 42
+
+    ct = CommandTree()
+
+    @ct.root(items = ct_ext.children)
+    class Root(object):
+
+        @ct.leaf()
+        def command1(self):
+            return 84
+
+    # Act
+    res = ct.execute(args = ['config', 'check'])
+
+    # Assert
+    assert res == 42

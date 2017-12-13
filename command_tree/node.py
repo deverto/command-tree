@@ -33,7 +33,7 @@ class Node(Item):
 
     Args:
         cls (type): the class handler type
-        items (list): list of :py:class:`command_tree.item.Item` based instances
+        items (list): list of :py:class:`command_tree.item.Item` decorated objects
     """
 
     def __init__(self, name, cls, id, arguments, items = None, parser_args = None, docstring_parser = None, name_generator = None):

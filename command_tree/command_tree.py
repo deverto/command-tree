@@ -31,6 +31,10 @@ class CommandTree(object):
     def items(self):
         return self._root.items
 
+    @property
+    def children(self):
+        return [item.obj for item in self._root.items]
+
     def root(self, items = None, **kwargs):
         """Special node decorator; it can used only once.
 
