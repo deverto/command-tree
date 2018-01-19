@@ -1,13 +1,16 @@
 {
     "name": "command-tree",
-    "version": "0.6.0",
-    "description": "Builds command tree on argparse.ArgumentParser bases for create command line interface",
-    "author": "Deverto Systems LTD",
-    "author_email": "admin@deverto.com",
-    "url": "http://gitlab.deverto/python-utils/command-tree",
-    "license": "MIT",
+    "version": "0.7.0",
+    "description": "Builds command tree on argparse",
+    "author": "Deverto Systems Ltd.",
+    "author_email": "python@deverto.com",
+    "url": "https://github.com/deverto/command-tree",
+    "license": "LGPL",
     "install_requires": [],
     "packages": [
         "command_tree"
+    ],
+    "classifiers" : [
+        "Programming Language :: Python :: 3 :: Only"
     ]
 }
