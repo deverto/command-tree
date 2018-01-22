@@ -1,3 +1,8 @@
+.. image:: https://travis-ci.org/deverto/command-tree.svg?branch=master
+    :target: https://travis-ci.org/deverto/command-tree
+
+.. image:: https://coveralls.io/repos/github/deverto/command-tree/badge.svg?branch=master
+   :target: https://coveralls.io/github/deverto/command-tree?branch=master
 
 About
 -----
