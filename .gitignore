@@ -9,3 +9,5 @@ htmlcov/
 .coverage
 cover/
 docs/build/
+*,cover
+coverage.xml

@@ -30,7 +30,7 @@ def test_help():
     assert 'arg1        help for arg1' in res
 
 def test_node_handler():
-    assert run_simple('node_handler', '-V') == '42.0'
+    assert run_simple('node_handler', '-v') == '42.0'
 
 def test_command_in_files():
     assert run_simple('commands_in_files/cli', 'node1 divide 42') == '21.0'
