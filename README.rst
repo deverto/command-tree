@@ -14,3 +14,61 @@ The main objectives are:
 Documentation
 -------------
 Full documentation: http://command-tree.readthedocs.io/
+
+Install
+-------
+
+::
+
+ pip install command-tree
+
+Basic example
+-------------
+
+.. code-block:: python
+
+    from command_tree import CommandTree
+
+    tree = CommandTree()
+
+    @tree.root()
+    class Root(object):
+
+        @tree.leaf()
+        @tree.argument()
+        def command1(self, arg1):
+            """divides the arguments by 2"""
+            return int(arg1) / 2
+
+        @tree.leaf(help = "multiplies the argument by 2")
+        @tree.argument()
+        def command2(self, arg1):
+            return int(arg1) * 2
+
+    print(tree.execute())
+
+::
+
+    $ python3 example.py command2 21
+    42
+
+
+More examples: http://command-tree.readthedocs.io/en/latest/examples/index.html
+
+Build docs
+----------
+
+::
+
+  pip install -r docs/requirements.txt
+  ./build-docs.sh
+
+
+Run tests
+---------
+
+::
+
+  pip install -r test/requirements.txt
+  pytest
+

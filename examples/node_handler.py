@@ -4,7 +4,7 @@ tree = CommandTree()
 
 @tree.optional
 @tree.root()
-@tree.argument('-V', action = 'store_true')
+@tree.argument('-v', action = 'store_true')
 class Root(object):
 
     def __init__(self, version):
