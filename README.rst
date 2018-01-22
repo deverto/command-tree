@@ -53,7 +53,7 @@ Basic example
     42
 
 
-More examples: http://command-tree.readthedocs.io/en/latest/examples/index.html
+More examples: http://command-tree.readthedocs.io/en/latest/#examples
 
 Build docs
 ----------
