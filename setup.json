@@ -1,6 +1,6 @@
 {
     "name": "command-tree",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "description": "Builds command tree on argparse",
     "long_description": "Documentation: http://command-tree.readthedocs.io/en/latest/",
     "author": "Deverto Systems Ltd.",
@@ -17,10 +17,10 @@
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
         "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3 :: Only",
-        "Topic :: Software Development :: Build Tools",
         "Topic :: Software Development :: Libraries :: Python Modules"
     ]
 }

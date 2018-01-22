@@ -7,6 +7,12 @@
 .. image:: https://readthedocs.org/projects/command-tree/badge/?version=latest
     :target: http://command-tree.readthedocs.io/en/latest/?badge=latest
 
+.. image:: https://badge.fury.io/py/command-tree.svg
+    :target: https://badge.fury.io/py/command-tree
+
+.. image:: https://img.shields.io/pypi/pyversions/command-tree.svg
+    :target: https://pypi.python.org/pypi/command-tree
+
 About
 -----
 
