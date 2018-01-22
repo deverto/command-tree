@@ -2,7 +2,10 @@
     :target: https://travis-ci.org/deverto/command-tree
 
 .. image:: https://coveralls.io/repos/github/deverto/command-tree/badge.svg?branch=master
-   :target: https://coveralls.io/github/deverto/command-tree?branch=master
+    :target: https://coveralls.io/github/deverto/command-tree?branch=master
+
+.. image:: https://readthedocs.org/projects/command-tree/badge/?version=latest
+    :target: http://command-tree.readthedocs.io/en/latest/?badge=latest
 
 About
 -----
